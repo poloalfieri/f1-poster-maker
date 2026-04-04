@@ -1,5 +1,7 @@
 import './App.css'
 import { CircuitMap } from './components/CircuitMap'
+import { BackgroundBeams } from './components/ui/background-beams'
+import React from "react";
 
 function App() {
   return (
@@ -25,6 +27,7 @@ function App() {
               Crea posters minimalistas de tus circuitos favoritos de F1
             </p>
           </div>
+          <BackgroundBeams />
 
           {/* Map - Full width below */}
           <div className="w-full">

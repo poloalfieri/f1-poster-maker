@@ -3,15 +3,268 @@ import { Button } from "@/components/ui/button";
 
 const circuits = [
   {
+    id: 'australia',
+    name: 'Albert Park Circuit',
+    lng: 144.9680,
+    lat: -37.8497,
+    country: 'Australia',
+    firstGP: 1996,
+    length: '5.278 km',
+    laps: 58,
+    image: 'https://media.formula1.com/image/upload/t_16by9South/c_lfill,w_3392/q_auto/v1740000001/GettyImages-1250040537.webp'
+  },
+  {
+    id: 'china',
+    name: 'Shanghai International Circuit',
+    lng: 121.2220,
+    lat: 31.3389,
+    country: 'China',
+    firstGP: 2004,
+    length: '5.451 km',
+    laps: 56,
+    image: 'https://www.civitatis.com/f/china/shanghai/entradas-formula-1-shanghai-grid.jpg'
+  },
+  {
+    id: 'japan',
+    name: 'Suzuka Circuit',
+    lng: 136.5340,
+    lat: 34.8431,
+    country: 'Japan',
+    firstGP: 1987,
+    length: '5.807 km',
+    laps: 53,
+    image: 'https://cdn-2.motorsport.com/images/amp/YEQabmKY/s1000/max-verstappen-red-bull-racing.jpg'
+  },
+  {
+    id: 'bahrain',
+    name: 'Bahrain International Circuit',
+    lng: 50.5106,
+    lat: 26.0325,
+    country: 'Bahrain',
+    firstGP: 2004,
+    length: '5.412 km',
+    laps: 57,
+    image: 'https://www.timeoutbahrain.com/cloud/timeoutbahrain/2024/09/17/409000265_18414303553033106_7265928152314773389_n.jpg'
+  },
+  {
+    id: 'saudi-arabia',
+    name: 'Jeddah Corniche Circuit',
+    lng: 39.1044,
+    lat: 21.6319,
+    country: 'Saudi Arabia',
+    firstGP: 2021,
+    length: '6.174 km',
+    laps: 50,
+    image: 'https://soulofsaudi.com/wp-content/uploads/2025/11/Feel-the-adrenaline-of-the-Saudi-Arabian-Grand-Prix-Jeddah-2026-%E2%80%94-where-the-roar-of-F1-engines-meets-the-serenity-of-the-Red-Sea.-Credits-Speedmag.webp'
+  },
+  {
+    id: 'miami',
+    name: 'Miami International Autodrome',
+    lng: -80.2389,
+    lat: 25.9581,
+    country: 'United States',
+    firstGP: 2022,
+    length: '5.412 km',
+    laps: 57,
+    image: 'https://media.ambito.com/p/5b0dff9b9da4ce37428964f118941143/adjuntos/239/imagenes/042/384/0042384715/f1-2025-miami-gpjpg.jpg'
+  },
+  {
+    id: 'canada',
+    name: 'Circuit Gilles Villeneuve',
+    lng: -73.5228,
+    lat: 45.5000,
+    country: 'Canada',
+    firstGP: 1978,
+    length: '4.361 km',
+    laps: 70,
+    image: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/07/72/f2/f0/circuit-gilles-villeneuve.jpg?w=1200&h=-1&s=1'
+  },
+  {
     id: 'monaco',
     name: 'Circuit de Monaco',
-    lng: 7.4260,
-    lat: 43.7368,
+    lng: 7.4206,
+    lat: 43.7347,
     country: 'Monaco',
     firstGP: 1950,
     length: '3.337 km',
     laps: 78,
-    image: 'https://www.civitatis.com/f/monaco/monaco/monaco.jpg'
+    image: ''
+  },
+  {
+    id: 'spain-barcelona',
+    name: 'Circuit de Barcelona-Catalunya',
+    lng: 2.2611,
+    lat: 41.5700,
+    country: 'Spain',
+    firstGP: 1991,
+    length: '4.657 km',
+    laps: 66,
+    image: 'https://www.grandprixgrandtours.com/wp-content/uploads/2024/04/GPGT_Spain_Banner_shutterstock_2160027715.webp'
+  },
+  {
+    id: 'austria',
+    name: 'Red Bull Ring',
+    lng: 14.7647,
+    lat: 47.2197,
+    country: 'Austria',
+    firstGP: 1970,
+    length: '4.318 km',
+    laps: 71,
+    image: 'https://www.redbullring.com/en/wp-content/uploads/sites/1/2023/07/LP_230630_F1_0094-scaled.jpg'
+  },
+  {
+    id: 'britain',
+    name: 'Silverstone Circuit',
+    lng: -1.0169,
+    lat: 52.0786,
+    country: 'Great Britain',
+    firstGP: 1950,
+    length: '5.891 km',
+    laps: 52,
+    image: 'https://media.formula1.com/image/upload/f_auto/q_auto/v1707391088/fom-website/2023/Miscellaneous/silverstone-start-2023.png'
+  },
+  {
+    id: 'belgium',
+    name: 'Circuit de Spa-Francorchamps',
+    lng: 5.9714,
+    lat: 50.4372,
+    country: 'Belgium',
+    firstGP: 1950,
+    length: '7.004 km',
+    laps: 44,
+    image: 'https://media.formula1.com/image/upload/c_lfill,w_3392/q_auto/v1740000001/content/dam/fom-website/2018-redesign-assets/Racehub%20header%20images%2016x9/Belgium.webp'
+  },
+  {
+    id: 'hungary',
+    name: 'Hungaroring',
+    lng: 19.2486,
+    lat: 47.5831,
+    country: 'Hungary',
+    firstGP: 1986,
+    length: '4.381 km',
+    laps: 70,
+    image: 'https://www.statsf1.com/photos/circuits/hungaroring.jpg'
+  },
+  {
+    id: 'netherlands',
+    name: 'Circuit Zandvoort',
+    lng: 4.5409,
+    lat: 52.3888,
+    country: 'Netherlands',
+    firstGP: 1952,
+    length: '4.259 km',
+    laps: 72,
+    image: 'https://media.formula1.com/image/upload/t_16by9South/c_lfill,w_3392/q_auto/v1740000001/trackside-images/2025/F1_Grand_Prix_of_Netherlands/2233001380.webp'
+  },
+  {
+    id: 'italy',
+    name: 'Monza Circuit',
+    lng: 9.2811,
+    lat: 45.6156,
+    country: 'Italy',
+    firstGP: 1950,
+    length: '5.793 km',
+    laps: 53,
+    image: 'https://media.formula1.com/image/upload/t_16by9South/c_lfill,w_3392/q_auto/v1740000001/trackside-images/2023/F1_Grand_Prix_of_Italy/1657349836.webp'
+  },
+  {
+    id: 'spain-madrid',
+    name: 'Circuito IFEMA Madrid (Madring)',
+    lng: -3.6160,
+    lat: 40.4660,
+    country: 'Spain',
+    firstGP: 2026,
+    length: '5.474 km',
+    laps: 57,
+    image: 'https://imgresizer.eurosport.com/unsafe/1200x0/filters:format(jpeg)/origin-imgresizer.eurosport.com/2024/12/19/image-ef7529a9-04dc-49fd-98d4-361800ba5cb4-85-2560-1440.jpeg'
+  },
+  {
+    id: 'azerbaijan',
+    name: 'Baku City Circuit',
+    lng: 49.8533,
+    lat: 40.3725,
+    country: 'Azerbaijan',
+    firstGP: 2016,
+    length: '6.003 km',
+    laps: 51,
+    image: 'https://media.formula1.com/image/upload/c_lfill,w_3392/q_auto/v1740000001/content/dam/fom-website/manual/Misc/ROAD_TO_F1/rsz_1015130123-lat-20180428-_onz8939.webp'
+  },
+  {
+    id: 'singapore',
+    name: 'Marina Bay Street Circuit',
+    lng: 103.8640,
+    lat: 1.2914,
+    country: 'Singapore',
+    firstGP: 2008,
+    length: '4.940 km',
+    laps: 62,
+    image: 'https://media.formula1.com/image/upload/t_16by9Centre/c_lfill,w_3392/q_auto/v1740000001/fom-website/2023/Singapore/GettyImages-1682522763.webp'
+  },
+  {
+    id: 'usa-austin',
+    name: 'Circuit of the Americas',
+    lng: -97.6411,
+    lat: 30.1328,
+    country: 'United States',
+    firstGP: 2012,
+    length: '5.513 km',
+    laps: 56,
+    image: 'https://media.formula1.com/image/upload/t_16by9South/c_lfill,w_3392/q_auto/v1740000001/trackside-images/2023/F1_Grand_Prix_of_United_States/1750720263.webp'
+  },
+  {
+    id: 'mexico',
+    name: 'Autódromo Hermanos Rodríguez',
+    lng: -99.0907,
+    lat: 19.4042,
+    country: 'Mexico',
+    firstGP: 1963,
+    length: '4.304 km',
+    laps: 71,
+    image: 'https://media.lacapital.com.ar/p/093342a31169724d92dea9b800c13e46/adjuntos/204/imagenes/101/972/0101972879/circuito-mexicojpg.png'
+  },
+  {
+    id: 'brazil',
+    name: 'Interlagos Circuit',
+    lng: -46.6997,
+    lat: -23.7036,
+    country: 'Brazil',
+    firstGP: 1973,
+    length: '4.309 km',
+    laps: 71,
+    image: 'https://images.daznservices.com/di/library/DAZN_News/98/97/2021-11-10-2019-brazil-interlagos-circuit-sao-paulo-circuit-f1-formula-1_s3d27fndgf7x1pz3c0c2994xo.jpg?t=180701525'
+  },
+  {
+    id: 'usa-las-vegas',
+    name: 'Las Vegas Strip Circuit',
+    lng: -115.1690,
+    lat: 36.1147,
+    country: 'United States',
+    firstGP: 2023,
+    length: '6.201 km',
+    laps: 50,
+    image: 'https://www.thedrive.com/wp-content/uploads/2024/11/GettyImages-2185854265.jpg'
+  },
+  {
+    id: 'qatar',
+    name: 'Lusail International Circuit',
+    lng: 51.4542,
+    lat: 25.4848,
+    country: 'Qatar',
+    firstGP: 2021,
+    length: '5.419 km',
+    laps: 57,
+    image: 'https://cdn-8.motorsport.com/images/mgl/0ZRKdlo0/s1000/lusail-international-circuit-o-1.jpg'
+  },
+  {
+    id: 'abu-dhabi',
+    name: 'Yas Marina Circuit',
+    lng: 54.6031,
+    lat: 24.4672,
+    country: 'United Arab Emirates',
+    firstGP: 2009,
+    length: '5.281 km',
+    laps: 58,
+    image: 'https://www.statsf1.com/photos/circuits/yasmarina.jpg'
   }
 ];
 
@@ -29,7 +282,7 @@ export function CircuitMap() {
               <div className="bg-zinc-900 dark:bg-zinc-100 size-4 rounded-full border-2 border-white dark:border-zinc-900 shadow-lg cursor-pointer hover:scale-125 transition-all duration-200 animate-pulse" />
             </MarkerContent>
             <MarkerPopup className="p-0 w-64 border-zinc-200 dark:border-zinc-700 dark:bg-zinc-900 bg-zinc-50">
-              <div className="relative overflow-hidden rounded-t-md">
+              <div className="relative overflow-hidden max-h-26 rounded-t-md">
                 <img
                     src={circuit.image}
                     alt={circuit.name}

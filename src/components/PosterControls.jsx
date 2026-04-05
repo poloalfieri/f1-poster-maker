@@ -13,122 +13,238 @@ export function PosterControls({
   onDownload,
   hasPreview 
 }) {
-  const controlGroups = [
+  // Controles organizados: algunos en grid de 2 columnas, otros full width
+  const controlLayout = [
     {
-      label: 'Ancho del Póster (cm)',
-      id: 'posterWidth',
-      type: 'number',
-      icon: Ruler,
-      min: 20,
-      max: 100,
-      step: 1,
-      showValue: false,
-    },
-    {
-      label: 'Alto del Póster (cm)',
-      id: 'posterHeight',
-      type: 'number',
-      icon: Ruler,
-      min: 20,
-      max: 140,
-      step: 1,
-      showValue: false,
-    },
-    {
-      label: 'DPI (Calidad)',
-      id: 'dpi',
-      type: 'select',
-      icon: Image,
-      options: [
-        { value: 150, label: '150 DPI (Rápido)' },
-        { value: 300, label: '300 DPI (Impresión)' },
-        { value: 600, label: '600 DPI (Alta calidad)' },
+      type: 'grid', // Grid de 2 columnas
+      controls: [
+        {
+          label: 'Ancho (cm)',
+          id: 'posterWidth',
+          type: 'number',
+          icon: Ruler,
+          min: 20,
+          max: 100,
+          step: 1,
+          showValue: false,
+        },
+        {
+          label: 'Alto (cm)',
+          id: 'posterHeight',
+          type: 'number',
+          icon: Ruler,
+          min: 20,
+          max: 140,
+          step: 1,
+          showValue: false,
+        },
       ]
     },
     {
-      label: 'Estilo de Mapa',
-      id: 'mapStyle',
-      type: 'select',
-      icon: Palette,
-      options: [
-        { value: 'light_nolabels', label: 'Minimalista (Sin etiquetas)' },
-        { value: 'light_all', label: 'Con nombres de calles' },
-        { value: 'dark_all', label: 'Modo Oscuro' },
+      type: 'single',
+      control: {
+        label: 'DPI (Calidad)',
+        id: 'dpi',
+        type: 'select',
+        icon: Image,
+        options: [
+          { value: 150, label: '150 DPI (Rápido)' },
+          { value: 300, label: '300 DPI (Impresión)' },
+          { value: 600, label: '600 DPI (Alta calidad)' },
+        ]
+      }
+    },
+    {
+      type: 'single',
+      control: {
+        label: 'Estilo de Mapa',
+        id: 'mapStyle',
+        type: 'select',
+        icon: Palette,
+        options: [
+          { value: 'light_nolabels', label: 'Minimalista (Sin etiquetas)' },
+          { value: 'light_all', label: 'Con nombres de calles' },
+          { value: 'dark_all', label: 'Modo Oscuro' },
+        ]
+      }
+    },
+    {
+      type: 'single',
+      control: {
+        label: 'Zoom (Encuadre)',
+        id: 'zoom',
+        type: 'range',
+        icon: Settings,
+        min: 12,
+        max: 20,
+        step: 0.1,
+        showValue: true,
+      }
+    },
+    {
+      type: 'grid', // Grid de 2 columnas para lat/lng
+      controls: [
+        {
+          label: 'Latitud',
+          id: 'latOffset',
+          type: 'range',
+          icon: Move,
+          min: -0.02,
+          max: 0.02,
+          step: 0.001,
+          showValue: true,
+        },
+        {
+          label: 'Longitud',
+          id: 'lngOffset',
+          type: 'range',
+          icon: Move,
+          min: -0.02,
+          max: 0.02,
+          step: 0.001,
+          showValue: true,
+        },
       ]
     },
     {
-      label: 'Zoom (Encuadre)',
-      id: 'zoom',
-      type: 'range',
-      icon: Settings,
-      min: 12,
-      max: 20,
-      step: 0.1,
-      showValue: true,
+      type: 'single',
+      control: {
+        label: 'Grosor Pista',
+        id: 'trackWidth',
+        type: 'range',
+        icon: Settings,
+        min: 2,
+        max: 15,
+        step: 1,
+        showValue: true,
+      }
     },
     {
-      label: 'Desplazamiento Latitud',
-      id: 'latOffset',
-      type: 'range',
-      icon: Move,
-      min: -0.02,
-      max: 0.02,
-      step: 0.001,
-      showValue: true,
+      type: 'single',
+      control: {
+        label: 'Tamaño de Texto',
+        id: 'textSize',
+        type: 'range',
+        icon: Type,
+        min: 0.5,
+        max: 1.4,
+        step: 0.1,
+        showValue: true,
+      }
     },
     {
-      label: 'Desplazamiento Longitud',
-      id: 'lngOffset',
-      type: 'range',
-      icon: Move,
-      min: -0.02,
-      max: 0.02,
-      step: 0.001,
-      showValue: true,
+      type: 'single',
+      control: {
+        label: 'Incluir Texto',
+        id: 'showText',
+        type: 'boolean',
+        icon: Type,
+        options: [
+          { value: true, label: 'Sí, generar leyenda' },
+          { value: false, label: 'No, solo espacio blanco' },
+        ]
+      }
     },
     {
-      label: 'Grosor Pista',
-      id: 'trackWidth',
-      type: 'range',
-      icon: Settings,
-      min: 2,
-      max: 15,
-      step: 1,
-      showValue: true,
-    },
-    {
-      label: 'Tamaño de Texto',
-      id: 'textSize',
-      type: 'range',
-      icon: Type,
-      min: 0.5,
-      max: 1.4,
-      step: 0.1,
-      showValue: true,
-    },
-    {
-      label: 'Incluir Texto',
-      id: 'showText',
-      type: 'boolean',
-      icon: Type,
-      options: [
-        { value: true, label: 'Sí, generar leyenda' },
-        { value: false, label: 'No, solo espacio blanco' },
-      ]
-    },
-    {
-      label: 'Borde Decorativo Mapa',
-      id: 'borderWidth',
-      type: 'select',
-      icon: Settings,
-      options: [
-        { value: 0, label: 'Sin borde' },
-        { value: 1, label: 'Borde fino (1px)' },
-        { value: 2, label: 'Borde medio (2px)' },
-        { value: 3, label: 'Borde grueso (3px)' },
-      ]
+      type: 'single',
+      control: {
+        label: 'Borde Decorativo Mapa',
+        id: 'borderWidth',
+        type: 'select',
+        icon: Settings,
+        options: [
+          { value: 0, label: 'Sin borde' },
+          { value: 1, label: 'Borde fino (1px)' },
+          { value: 2, label: 'Borde medio (2px)' },
+          { value: 3, label: 'Borde grueso (3px)' },
+        ]
+      }
     },
   ];
+
+  const renderControl = (control) => {
+    const Icon = control.icon;
+    
+    return (
+      <div key={control.id} className="space-y-2">
+        <label className="flex items-center gap-2 text-xs font-semibold text-zinc-900 dark:text-zinc-100">
+          <Icon className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-400" />
+          {control.label}
+          {control.showValue && (
+            <span className="ml-auto text-zinc-600 dark:text-zinc-300 font-mono text-xs bg-zinc-100 dark:bg-zinc-700 px-2 py-0.5 rounded">
+              {settings[control.id]}
+            </span>
+          )}
+        </label>
+
+        {control.type === 'select' && (
+          <Select
+            value={String(settings[control.id])}
+            onValueChange={(value) => {
+              const parsedValue = (control.id === 'dpi' || control.id === 'borderWidth') 
+                ? parseInt(value) 
+                : value;
+              onSettingChange(control.id, parsedValue);
+            }}
+          >
+            <SelectTrigger className="w-full h-9 text-xs">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {control.options.map((option) => (
+                <SelectItem key={option.value} value={String(option.value)} className="text-xs">
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
+
+        {control.type === 'number' && (
+          <Input
+            type="number"
+            min={control.min}
+            max={control.max}
+            step={control.step}
+            value={settings[control.id]}
+            onChange={(e) => onSettingChange(control.id, parseFloat(e.target.value))}
+            className="w-full h-9 text-xs"
+          />
+        )}
+
+        {control.type === 'boolean' && (
+          <Select
+            value={String(settings[control.id])}
+            onValueChange={(value) => onSettingChange(control.id, value === 'true')}
+          >
+            <SelectTrigger className="w-full h-9 text-xs">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {control.options.map((option) => (
+                <SelectItem key={String(option.value)} value={String(option.value)} className="text-xs">
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
+
+        {control.type === 'range' && (
+          <div className="pt-2 pb-1">
+            <Slider
+              min={control.min}
+              max={control.max}
+              step={control.step}
+              value={[settings[control.id]]}
+              onValueChange={(value) => onSettingChange(control.id, value[0])}
+              className="w-full"
+            />
+          </div>
+        )}
+      </div>
+    );
+  };
 
   return (
     <div className="space-y-4">
@@ -145,88 +261,18 @@ export function PosterControls({
         </div>
         
         <div className="p-5 space-y-4">
-          {controlGroups.map((control) => {
-            const Icon = control.icon;
-            return (
-              <div key={control.id} className="space-y-2">
-                <label className="flex items-center gap-2 text-xs font-semibold text-zinc-900 dark:text-zinc-100">
-                  <Icon className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-400" />
-                  {control.label}
-                  {control.showValue && (
-                    <span className="ml-auto text-zinc-600 dark:text-zinc-300 font-mono text-xs bg-zinc-100 dark:bg-zinc-700 px-2 py-0.5 rounded">
-                      {settings[control.id]}
-                    </span>
-                  )}
-                </label>
-
-                {control.type === 'select' && (
-                  <Select
-                    value={String(settings[control.id])}
-                    onValueChange={(value) => {
-                      // Convertir a número si es DPI o borderWidth
-                      const parsedValue = (control.id === 'dpi' || control.id === 'borderWidth') 
-                        ? parseInt(value) 
-                        : value;
-                      onSettingChange(control.id, parsedValue);
-                    }}
-                  >
-                    <SelectTrigger className="w-full h-9 text-xs">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {control.options.map((option) => (
-                        <SelectItem key={option.value} value={String(option.value)} className="text-xs">
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                )}
-
-                {control.type === 'number' && (
-                  <Input
-                    type="number"
-                    min={control.min}
-                    max={control.max}
-                    step={control.step}
-                    value={settings[control.id]}
-                    onChange={(e) => onSettingChange(control.id, parseFloat(e.target.value))}
-                    className="w-full h-9 text-xs"
-                  />
-                )}
-
-                {control.type === 'boolean' && (
-                  <Select
-                    value={String(settings[control.id])}
-                    onValueChange={(value) => onSettingChange(control.id, value === 'true')}
-                  >
-                    <SelectTrigger className="w-full h-9 text-xs">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {control.options.map((option) => (
-                        <SelectItem key={String(option.value)} value={String(option.value)} className="text-xs">
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                )}
-
-                {control.type === 'range' && (
-                  <div className="pt-2 pb-1">
-                    <Slider
-                      min={control.min}
-                      max={control.max}
-                      step={control.step}
-                      value={[settings[control.id]]}
-                      onValueChange={(value) => onSettingChange(control.id, value[0])}
-                      className="w-full"
-                    />
-                  </div>
-                )}
-              </div>
-            );
+          {controlLayout.map((item, index) => {
+            if (item.type === 'grid') {
+              // Grid de 2 columnas
+              return (
+                <div key={index} className="grid grid-cols-2 gap-3">
+                  {item.controls.map(control => renderControl(control))}
+                </div>
+              );
+            } else {
+              // Control individual full width
+              return renderControl(item.control);
+            }
           })}
         </div>
       </div>

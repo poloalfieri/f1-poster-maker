@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { PosterControls } from './PosterControls';
 import { PosterCanvas } from './PosterCanvas';
 
@@ -251,7 +251,7 @@ export function PosterGenerator({ circuit }) {
       {/* Content Grid - Preview left, Controls right (side by side) */}
       <div className="grid grid-cols-2 lg:grid-cols-[380px,1fr] gap-6 items-start">
         {/* Preview - Left */}
-        <div className="w-full">
+        <div className="w-full h-full">
           <PosterCanvas
             canvasRef={canvasRef}
             isGenerating={isGenerating}

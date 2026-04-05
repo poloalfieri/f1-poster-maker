@@ -1,4 +1,7 @@
 import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import { Slider } from './ui/slider';
 import { Download, Sparkles, Settings, Image, Type, Palette, Ruler } from 'lucide-react';
 
 export function PosterControls({ 
@@ -19,7 +22,7 @@ export function PosterControls({
       min: 20,
       max: 100,
       step: 1,
-      showValue: true,
+      showValue: false,
     },
     {
       label: 'Alto del Póster (cm)',
@@ -29,7 +32,7 @@ export function PosterControls({
       min: 20,
       max: 140,
       step: 1,
-      showValue: true,
+      showValue: false,
     },
     {
       label: 'DPI (Calidad)',
@@ -106,7 +109,8 @@ export function PosterControls({
   ];
 
   return (
-    <div className="space-y-4">{/* Controls Card */}
+    <div className="space-y-4">
+      {/* Controls Card */}
       <div className="bg-white dark:bg-zinc-800/50 rounded-2xl border border-zinc-200 dark:border-zinc-700 overflow-hidden">
         <div className="bg-gradient-to-br from-zinc-900 to-zinc-800 dark:from-zinc-800 dark:to-zinc-900 px-5 py-3.5">
           <h3 className="text-base font-bold text-white flex items-center gap-2">
@@ -134,58 +138,64 @@ export function PosterControls({
                 </label>
 
                 {control.type === 'select' && (
-                  <select
-                    value={settings[control.id]}
-                    onChange={(e) => onSettingChange(control.id, control.id === 'dpi' ? parseInt(e.target.value) : e.target.value)}
-                    className="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-100 focus:border-transparent transition-all"
+                  <Select
+                    value={String(settings[control.id])}
+                    onValueChange={(value) => 
+                      onSettingChange(control.id, control.id === 'dpi' ? parseInt(value) : value)
+                    }
                   >
-                    {control.options.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
+                    <SelectTrigger className="w-full h-9 text-xs">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {control.options.map((option) => (
+                        <SelectItem key={option.value} value={String(option.value)} className="text-xs">
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 )}
 
                 {control.type === 'number' && (
-                  <input
+                  <Input
                     type="number"
                     min={control.min}
                     max={control.max}
                     step={control.step}
                     value={settings[control.id]}
                     onChange={(e) => onSettingChange(control.id, parseFloat(e.target.value))}
-                    className="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-100 focus:border-transparent transition-all"
+                    className="w-full h-9 text-xs"
                   />
                 )}
 
                 {control.type === 'boolean' && (
-                  <select
-                    value={settings[control.id]}
-                    onChange={(e) => onSettingChange(control.id, e.target.value === 'true')}
-                    className="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-100 focus:border-transparent transition-all"
+                  <Select
+                    value={String(settings[control.id])}
+                    onValueChange={(value) => onSettingChange(control.id, value === 'true')}
                   >
-                    {control.options.map((option) => (
-                      <option key={String(option.value)} value={String(option.value)}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
+                    <SelectTrigger className="w-full h-9 text-xs">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {control.options.map((option) => (
+                        <SelectItem key={String(option.value)} value={String(option.value)} className="text-xs">
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 )}
 
                 {control.type === 'range' && (
-                  <div className="relative">
-                    <input
-                      type="range"
+                  <div className="pt-2 pb-1">
+                    <Slider
                       min={control.min}
                       max={control.max}
                       step={control.step}
-                      value={settings[control.id]}
-                      onChange={(e) => onSettingChange(control.id, parseFloat(e.target.value))}
-                      className="w-full h-2.5 bg-zinc-200 dark:bg-zinc-700 rounded-full appearance-none cursor-pointer slider-thumb"
-                      style={{
-                        background: `linear-gradient(to right, rgb(24 24 27) 0%, rgb(24 24 27) ${((settings[control.id] - control.min) / (control.max - control.min)) * 100}%, rgb(228 228 231) ${((settings[control.id] - control.min) / (control.max - control.min)) * 100}%, rgb(228 228 231) 100%)`
-                      }}
+                      value={[settings[control.id]]}
+                      onValueChange={(value) => onSettingChange(control.id, value[0])}
+                      className="w-full"
                     />
                   </div>
                 )}

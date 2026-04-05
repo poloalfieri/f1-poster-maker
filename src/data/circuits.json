@@ -10,7 +10,7 @@
     "length": "5.278 km",
     "laps": 58,
     "image": "https://media.formula1.com/image/upload/t_16by9South/c_lfill,w_3392/q_auto/v1740000001/GettyImages-1250040537.webp",
-    "geojsonId": "au-1996"
+    "geojsonId": "au-1953"
   },
   {
     "id": "china",
@@ -49,7 +49,7 @@
     "length": "5.412 km",
     "laps": 57,
     "image": "https://www.timeoutbahrain.com/cloud/timeoutbahrain/2024/09/17/409000265_18414303553033106_7265928152314773389_n.jpg",
-    "geojsonId": "bh-2004"
+    "geojsonId": "bh-2002"
   },
   {
     "id": "saudi-arabia",
@@ -257,7 +257,7 @@
     "length": "4.304 km",
     "laps": 71,
     "image": "https://media.lacapital.com.ar/p/093342a31169724d92dea9b800c13e46/adjuntos/204/imagenes/101/972/0101972879/circuito-mexicojpg.png",
-    "geojsonId": "mx-1959"
+    "geojsonId": "mx-1962"
   },
   {
     "id": "brazil",

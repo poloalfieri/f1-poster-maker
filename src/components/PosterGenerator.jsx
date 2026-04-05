@@ -155,6 +155,12 @@ export function PosterGenerator({ circuit }) {
         y: (lat2t(lat, zoom) - startTileY * scale) * TS - offsetY + topPadding
       });
 
+      // Aplicar clipping para que el circuito no sobrepase el área del mapa
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(sidePadding, topPadding, mapDisplayW, mapDisplayH);
+      ctx.clip();
+
       ctx.lineJoin = "round";
       ctx.lineCap = "round";
       ctx.beginPath();
@@ -172,6 +178,9 @@ export function PosterGenerator({ circuit }) {
       ctx.strokeStyle = "#111";
       ctx.lineWidth = trackWidth * scaleFactor;
       ctx.stroke();
+
+      // Restaurar el contexto para que el clipping no afecte otros elementos
+      ctx.restore();
 
       // Borde del mapa
       if (borderWidth > 0) {

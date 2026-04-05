@@ -79,13 +79,15 @@
   {
     "id": "monaco",
     "name": "Circuit de Monaco",
-    "lng": 7.4206,
-    "lat": 43.7347,
+    "displayName": "CIRCUIT DE MONACO",
+    "lng": 7.4260,
+    "lat": 43.7368,
     "country": "Monaco",
     "firstGP": 1950,
     "length": "3.337 km",
     "laps": 78,
-    "image": "https://www.civitatis.com/f/monaco/monaco/monaco.jpg"
+    "image": "https://www.civitatis.com/f/monaco/monaco/monaco.jpg",
+    "geojsonId": "mc-1929"
   },
   {
     "id": "spain-barcelona",

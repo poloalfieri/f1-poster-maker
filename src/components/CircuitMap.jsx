@@ -2,7 +2,15 @@ import { Map, MapMarker, MarkerContent, MarkerPopup, MapControls } from './ui/ma
 import { Button } from "@/components/ui/button";
 import circuits from '@/data/circuits.json';
 
-export function CircuitMap() {
+export function CircuitMap({ onCircuitSelect }) {
+  const handleCreatePoster = (circuit) => {
+    if (!circuit.geojsonId) {
+      alert('Este circuito aún no está disponible para generación de pósters. Por ahora solo Monaco está habilitado.');
+      return;
+    }
+    onCircuitSelect(circuit);
+  };
+
   return (
     <div className="w-full h-[500px] rounded-2xl overflow-hidden shadow-2xl border border-zinc-200 dark:border-zinc-800">
       <Map center={[7.4260, 43.7368]} zoom={1}>
@@ -49,6 +57,7 @@ export function CircuitMap() {
                 {/*</div>*/}
 
                 <Button
+                  onClick={() => handleCreatePoster(circuit)}
                   className="w-full bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-zinc-200 text-white dark:text-zinc-900"
                   size="sm"
                 >

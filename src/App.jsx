@@ -1,10 +1,26 @@
 import './App.css'
+import { useState, useRef } from 'react'
 import { CircuitMap } from './components/CircuitMap'
+import { PosterGenerator } from './components/PosterGenerator'
 import { BackgroundBeams } from './components/ui/background-beams'
 import { Flag, Palette, Printer } from 'lucide-react'
 import React from "react";
 
 function App() {
+  const [selectedCircuit, setSelectedCircuit] = useState(null);
+  const generatorRef = useRef(null);
+
+  const handleCircuitSelect = (circuit) => {
+    setSelectedCircuit(circuit);
+    // Scroll suave a la sección del generador
+    setTimeout(() => {
+      generatorRef.current?.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'start' 
+      });
+    }, 100);
+  };
+
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
       {/* Hero Section */}
@@ -32,33 +48,34 @@ function App() {
 
           {/* Map - Full width below */}
           <div className="w-full">
-            <CircuitMap />
+            <CircuitMap onCircuitSelect={handleCircuitSelect} />
           </div>
         </div>
       </section>
 
-      {/* Preview Section */}
-      <section className="py-24 px-6 bg-white dark:bg-zinc-900">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <span className="text-sm font-mono text-zinc-500 dark:text-zinc-400 tracking-wider">
-              EJEMPLO
-            </span>
-            <h2 className="text-5xl font-bold text-zinc-900 dark:text-zinc-100 mt-4 tracking-tight">
-              Monaco 1950
-            </h2>
-          </div>
-          
-          <div className="bg-zinc-100 dark:bg-zinc-800 rounded-2xl aspect-[5/7] flex items-center justify-center">
-            <span className="text-zinc-400 dark:text-zinc-600 font-mono text-sm">
-              [Preview del circuito]
-            </span>
-          </div>
+      {/* Generator Section */}
+      <section ref={generatorRef} className="py-24 px-6 bg-white dark:bg-zinc-900">
+        <div className="max-w-7xl mx-auto">
+          {selectedCircuit ? (
+            <PosterGenerator circuit={selectedCircuit} />
+          ) : (
+            <div className="text-center py-20">
+              <div className="inline-block p-6 bg-zinc-100 dark:bg-zinc-800 rounded-2xl mb-6">
+                <Flag className="w-16 h-16 text-zinc-400 dark:text-zinc-600" />
+              </div>
+              <h2 className="text-3xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
+                Selecciona un circuito
+              </h2>
+              <p className="text-zinc-600 dark:text-zinc-400 max-w-md mx-auto">
+                Haz clic en cualquier circuito del mapa para comenzar a crear tu póster personalizado
+              </p>
+            </div>
+          )}
         </div>
       </section>
 
       {/* Features */}
-      <section className="py-24 px-6">
+      <section className="py-24 px-6 bg-zinc-50 dark:bg-zinc-950">
         <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-12">
           <div className="text-center">
             <div className="flex justify-center mb-4">

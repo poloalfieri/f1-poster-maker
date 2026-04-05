@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { PosterControls } from './PosterControls';
 import { PosterCanvas } from './PosterCanvas';
 
@@ -13,6 +14,7 @@ function lat2t(lat, z) {
 }
 
 export function PosterGenerator({ circuit }) {
+  const { t } = useTranslation();
   const canvasRef = useRef(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -207,7 +209,7 @@ export function PosterGenerator({ circuit }) {
         ctx.fillStyle = "#555555"; // Lo oscurecí un poco de #777 para darle más cuerpo
         ctx.letterSpacing = "4px"; // Un poco más de tracking ayuda a la legibilidad
         ctx.fillText(
-            `First Grand Prix ${circuit.firstGP} / Number of Laps ${circuit.laps} / Circuit Length ${circuit.length}`,
+            `${t('poster.text.firstGP')} ${circuit.firstGP} / ${t('poster.text.laps')} ${circuit.laps} / ${t('poster.text.length')} ${circuit.length}`,
             PW / 2,
             PH - textMargin + (PW * 0.09) // Bajamos un poco más la línea por el nuevo tamaño
         );
@@ -228,7 +230,7 @@ export function PosterGenerator({ circuit }) {
 
     } catch (error) {
       console.error('Error generating poster:', error);
-      alert('Error al generar el póster. Por favor intenta de nuevo.');
+      alert(t('generator.error'));
     } finally {
       setTimeout(() => {
         setIsGenerating(false);
@@ -251,7 +253,7 @@ export function PosterGenerator({ circuit }) {
       {/* Header */}
       <div className="text-center mb-8">
         <span className="text-sm font-mono text-zinc-500 dark:text-zinc-400 tracking-wider">
-          GENERADOR DE PÓSTER
+          {t('generator.header')}
         </span>
         <h2 className="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-zinc-100 mt-3 tracking-tight">
           {circuit.name}

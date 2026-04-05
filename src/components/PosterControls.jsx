@@ -2,6 +2,7 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Slider } from './ui/slider';
+import { useTranslation } from 'react-i18next';
 import {Download, Sparkles, Settings, Image, Type, Palette, Ruler, Move, Lightbulb} from 'lucide-react';
 
 export function PosterControls({ 
@@ -13,13 +14,15 @@ export function PosterControls({
   onDownload,
   hasPreview 
 }) {
+  const { t } = useTranslation();
+  
   // Controles organizados: algunos en grid de 2 columnas, otros full width
   const controlLayout = [
     {
       type: 'grid', // Grid de 2 columnas
       controls: [
         {
-          label: 'Ancho (cm)',
+          label: t('controls.width'),
           id: 'posterWidth',
           type: 'number',
           icon: Ruler,
@@ -29,7 +32,7 @@ export function PosterControls({
           showValue: false,
         },
         {
-          label: 'Alto (cm)',
+          label: t('controls.height'),
           id: 'posterHeight',
           type: 'number',
           icon: Ruler,
@@ -43,35 +46,35 @@ export function PosterControls({
     {
       type: 'single',
       control: {
-        label: 'DPI (Calidad)',
+        label: t('controls.dpi'),
         id: 'dpi',
         type: 'select',
         icon: Image,
         options: [
-          { value: 150, label: '150 DPI (Rápido)' },
-          { value: 300, label: '300 DPI (Impresión)' },
-          { value: 600, label: '600 DPI (Alta calidad)' },
+          { value: 150, label: t('controls.dpiOptions.fast') },
+          { value: 300, label: t('controls.dpiOptions.print') },
+          { value: 600, label: t('controls.dpiOptions.high') },
         ]
       }
     },
     {
       type: 'single',
       control: {
-        label: 'Estilo de Mapa',
+        label: t('controls.mapStyle'),
         id: 'mapStyle',
         type: 'select',
         icon: Palette,
         options: [
-          { value: 'light_nolabels', label: 'Minimalista (Sin etiquetas)' },
-          { value: 'light_all', label: 'Con nombres de calles' },
-          { value: 'dark_all', label: 'Modo Oscuro' },
+          { value: 'light_nolabels', label: t('controls.mapStyleOptions.minimal') },
+          { value: 'light_all', label: t('controls.mapStyleOptions.streets') },
+          { value: 'dark_all', label: t('controls.mapStyleOptions.dark') },
         ]
       }
     },
     {
       type: 'single',
       control: {
-        label: 'Zoom (Encuadre)',
+        label: t('controls.zoom'),
         id: 'zoom',
         type: 'range',
         icon: Settings,
@@ -85,7 +88,7 @@ export function PosterControls({
       type: 'grid', // Grid de 2 columnas para lat/lng
       controls: [
         {
-          label: 'Latitud',
+          label: t('controls.latitude'),
           id: 'latOffset',
           type: 'range',
           icon: Move,
@@ -95,7 +98,7 @@ export function PosterControls({
           showValue: true,
         },
         {
-          label: 'Longitud',
+          label: t('controls.longitude'),
           id: 'lngOffset',
           type: 'range',
           icon: Move,
@@ -109,7 +112,7 @@ export function PosterControls({
     {
       type: 'single',
       control: {
-        label: 'Grosor Pista',
+        label: t('controls.trackWidth'),
         id: 'trackWidth',
         type: 'range',
         icon: Settings,
@@ -122,7 +125,7 @@ export function PosterControls({
     {
       type: 'single',
       control: {
-        label: 'Tamaño de Texto',
+        label: t('controls.textSize'),
         id: 'textSize',
         type: 'range',
         icon: Type,
@@ -135,28 +138,28 @@ export function PosterControls({
     {
       type: 'single',
       control: {
-        label: 'Incluir Texto',
+        label: t('controls.includeText'),
         id: 'showText',
         type: 'boolean',
         icon: Type,
         options: [
-          { value: true, label: 'Sí, generar leyenda' },
-          { value: false, label: 'No, solo espacio blanco' },
+          { value: true, label: t('controls.textOptions.yes') },
+          { value: false, label: t('controls.textOptions.no') },
         ]
       }
     },
     {
       type: 'single',
       control: {
-        label: 'Borde Decorativo Mapa',
+        label: t('controls.mapBorder'),
         id: 'borderWidth',
         type: 'select',
         icon: Settings,
         options: [
-          { value: 0, label: 'Sin borde' },
-          { value: 1, label: 'Borde fino (1px)' },
-          { value: 2, label: 'Borde medio (2px)' },
-          { value: 3, label: 'Borde grueso (3px)' },
+          { value: 0, label: t('controls.borderOptions.none') },
+          { value: 1, label: t('controls.borderOptions.thin') },
+          { value: 2, label: t('controls.borderOptions.medium') },
+          { value: 3, label: t('controls.borderOptions.thick') },
         ]
       }
     },
@@ -253,10 +256,10 @@ export function PosterControls({
         <div className="bg-gradient-to-br from-zinc-900 to-zinc-800 dark:from-zinc-800 dark:to-zinc-900 px-5 py-3.5">
           <h3 className="text-base font-bold text-white flex items-center gap-2">
             <Settings className="w-4 h-4" />
-            Personalización
+            {t('controls.header')}
           </h3>
           <p className="text-zinc-300 text-xs mt-0.5">
-            Ajusta cada detalle de tu póster
+            {t('controls.subtitle')}
           </p>
         </div>
         
@@ -276,7 +279,7 @@ export function PosterControls({
           })}
         </div>
       </div>
-      
+
       {/* Action Buttons */}
       <div className="flex flex-col gap-2.5">
         <Button
@@ -285,7 +288,7 @@ export function PosterControls({
           className="w-full bg-gradient-to-r from-zinc-900 to-zinc-800 hover:from-zinc-800 hover:to-zinc-700 dark:from-zinc-100 dark:to-zinc-200 dark:hover:from-zinc-200 dark:hover:to-zinc-300 text-white dark:text-zinc-900 font-bold py-5 text-sm shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <Sparkles className="w-4 h-4 mr-2" />
-          {isGenerating ? `Generando... ${progress}%` : 'Generar Póster'}
+          {isGenerating ? t('controls.generatingButton', { progress }) : t('controls.generateButton')}
         </Button>
 
         {hasPreview && (
@@ -296,7 +299,7 @@ export function PosterControls({
             className="w-full border-2 border-zinc-900 dark:border-zinc-100 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-900 hover:text-white dark:hover:bg-zinc-100 dark:hover:text-zinc-900 font-semibold py-5 text-sm transition-all duration-200 disabled:opacity-50"
           >
             <Download className="w-4 h-4 mr-2" />
-            Descargar Póster
+            {t('controls.downloadButton')}
           </Button>
         )}
       </div>
@@ -310,11 +313,11 @@ export function PosterControls({
             </div>
           </div>
           <div className="space-y-1.5 text-xs text-blue-900 dark:text-blue-200">
-            <p className="font-semibold">Tips para el mejor resultado:</p>
+            <p className="font-semibold">{t('controls.tips.header')}</p>
             <ul className="space-y-0.5 text-xs leading-relaxed">
-              <li>• Tamaños comunes: 40×56, 30×42, 50×70 cm</li>
-              <li>• 300 DPI es ideal para impresión profesional</li>
-              <li>• Ajusta el zoom para encuadrar el circuito perfectamente</li>
+              <li>• {t('controls.tips.sizes')}</li>
+              <li>• {t('controls.tips.dpi')}</li>
+              <li>• {t('controls.tips.zoom')}</li>
             </ul>
           </div>
         </div>

@@ -1,13 +1,16 @@
 import { Loader2, ImageIcon } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export function PosterCanvas({ canvasRef, isGenerating, progress }) {
+  const { t } = useTranslation();
+  
   return (
     <div className="sticky top-6">
       <div className="bg-white dark:bg-zinc-800/50 rounded-xl border border-zinc-200 dark:border-zinc-700 overflow-hidden shadow-lg">
         <div className="bg-gradient-to-br from-zinc-900 to-zinc-800 dark:from-zinc-800 dark:to-zinc-900 px-4 py-3">
           <h3 className="text-sm font-bold text-white flex items-center gap-2">
             <ImageIcon className="w-4 h-4" />
-            Vista Previa
+            {t('canvas.header')}
           </h3>
         </div>
 
@@ -31,10 +34,10 @@ export function PosterCanvas({ canvasRef, isGenerating, progress }) {
                   </svg>
                 </div>
                 <p className="text-sm font-semibold text-zinc-700 dark:text-zinc-300 text-center mb-1">
-                  Listo para crear
+                  {t('canvas.emptyState.title')}
                 </p>
                 <p className="text-xs text-zinc-500 dark:text-zinc-400 text-center max-w-xs">
-                  Ajusta los controles y genera
+                  {t('canvas.emptyState.subtitle')}
                 </p>
               </div>
             ) : (
@@ -46,7 +49,7 @@ export function PosterCanvas({ canvasRef, isGenerating, progress }) {
                       <Loader2 className="w-12 h-12 text-zinc-900 dark:text-zinc-100 animate-spin relative" />
                     </div>
                     <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 mb-2">
-                      Generando póster
+                      {t('canvas.generating.title')}
                     </p>
                     <div className="w-48 bg-zinc-200 dark:bg-zinc-700 rounded-full h-2 overflow-hidden border border-zinc-300 dark:border-zinc-600">
                       <div
@@ -57,7 +60,7 @@ export function PosterCanvas({ canvasRef, isGenerating, progress }) {
                       </div>
                     </div>
                     <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-2 font-mono">
-                      {progress}%
+                      {t('canvas.generating.progress', { progress })}
                     </p>
                   </div>
                 )}
@@ -74,11 +77,11 @@ export function PosterCanvas({ canvasRef, isGenerating, progress }) {
           <div className="text-xs text-zinc-500 dark:text-zinc-400 space-y-1">
             <p className="flex items-center gap-1.5">
               <span className="text-zinc-400 dark:text-zinc-600">•</span>
-              <span>Vista previa en baja resolución</span>
+              <span>{t('canvas.footer.preview')}</span>
             </p>
             <p className="flex items-center gap-1.5">
               <span className="text-zinc-400 dark:text-zinc-600">•</span>
-              <span>Descarga en calidad completa</span>
+              <span>{t('canvas.footer.download')}</span>
             </p>
           </div>
         </div>

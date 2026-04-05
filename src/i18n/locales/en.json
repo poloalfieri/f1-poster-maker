@@ -1,0 +1,105 @@
+{
+  "hero": {
+    "formula1": "FORMULA 1",
+    "circuit": "Circuit",
+    "posters": "Posters",
+    "subtitle": "Create minimalist posters of your favorite F1 circuits"
+  },
+  "emptyState": {
+    "title": "Select a circuit",
+    "description": "Click on any circuit on the map to start creating your personalized poster."
+  },
+  "features": {
+    "allCircuits": {
+      "title": "All Circuits",
+      "description": "Access the complete collection of F1 circuits in 2026."
+    },
+    "customizable": {
+      "title": "Customizable",
+      "description": "Choose colors, map styles and adjust every detail."
+    },
+    "highQuality": {
+      "title": "High Quality",
+      "description": "Download in 300 DPI ready to print."
+    }
+  },
+  "footer": {
+    "copyright": "F1 POSTER MAKER — 2026",
+    "twitter": "X (Twitter)",
+    "github": "GitHub"
+  },
+  "generator": {
+    "header": "POSTER GENERATOR",
+    "error": "Error generating poster. Please try again."
+  },
+  "controls": {
+    "header": "Customization",
+    "subtitle": "Adjust every detail of your poster",
+    "width": "Width (cm)",
+    "height": "Height (cm)",
+    "dpi": "DPI (Quality)",
+    "mapStyle": "Map Style",
+    "zoom": "Zoom (Framing)",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
+    "trackWidth": "Track Width",
+    "textSize": "Text Size",
+    "includeText": "Include Text",
+    "mapBorder": "Decorative Map Border",
+    "dpiOptions": {
+      "fast": "150 DPI (Fast)",
+      "print": "300 DPI (Print)",
+      "high": "600 DPI (High Quality)"
+    },
+    "mapStyleOptions": {
+      "minimal": "Minimalist (No labels)",
+      "streets": "With street names",
+      "dark": "Dark Mode"
+    },
+    "textOptions": {
+      "yes": "Yes, generate legend",
+      "no": "No, only white space"
+    },
+    "borderOptions": {
+      "none": "No border",
+      "thin": "Thin border (1px)",
+      "medium": "Medium border (2px)",
+      "thick": "Thick border (3px)"
+    },
+    "generateButton": "Generate Poster",
+    "generatingButton": "Generating... {{progress}}%",
+    "downloadButton": "Download Poster",
+    "tips": {
+      "header": "Tips for best results:",
+      "sizes": "Common sizes: 40×56, 30×42, 50×70 cm.",
+      "dpi": "300 DPI is ideal for professional printing.",
+      "zoom": "Adjust zoom to frame the circuit perfectly."
+    }
+  },
+  "canvas": {
+    "header": "Preview",
+    "emptyState": {
+      "title": "Ready to create",
+      "subtitle": "Adjust controls and generate"
+    },
+    "generating": {
+      "title": "Generating poster",
+      "progress": "{{progress}}%"
+    },
+    "footer": {
+      "preview": "Low resolution preview",
+      "download": "Download in full quality"
+    }
+  },
+  "map": {
+    "alert": "This circuit is not yet available for poster generation. For now only Monaco is enabled.",
+    "createButton": "Create poster"
+  },
+  "poster": {
+    "text": {
+      "firstGP": "First Grand Prix",
+      "laps": "Number of Laps",
+      "length": "Circuit Length"
+    }
+  }
+}

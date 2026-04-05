@@ -1,8 +1,10 @@
 import './App.css'
 import { useState, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { CircuitMap } from './components/CircuitMap'
 import { PosterGenerator } from './components/PosterGenerator'
 import { BackgroundBeams } from './components/ui/background-beams'
+import { LanguageSwitcher } from './components/LanguageSwitcher'
 import {Flag, Palette, Printer, Road} from 'lucide-react'
 import React from "react";
 import xIcon from './assets/x.svg'
@@ -11,6 +13,7 @@ import githubIconLight from './assets/github_light.svg'
 import githubIconDark from './assets/github_dark.svg'
 
 function App() {
+  const { t } = useTranslation();
   const [selectedCircuit, setSelectedCircuit] = useState(null);
   const generatorRef = useRef(null);
 
@@ -30,22 +33,27 @@ function App() {
       {/* Hero Section */}
       <section className="relative px-6 py-12">
         <div className="max-w-7xl mx-auto w-full">
+          {/* Language Switcher - Top Right */}
+          <div className="absolute top-0 right-6 z-20 pointer-events-auto">
+            <LanguageSwitcher />
+          </div>
+          
           {/* Header - Text */}
           <div className="relative z-10 text-center mb-12 pointer-events-none">
             <div className="inline-block mb-4">
               <span className="text-sm font-mono text-zinc-500 dark:text-zinc-400 tracking-wider">
-                FORMULA 1
+                {t('hero.formula1')}
               </span>
             </div>
             
             <h1 className="text-6xl md:text-8xl font-bold tracking-tighter mb-4">
-              <span className="text-zinc-900 dark:text-zinc-100">Circuit</span>
+              <span className="text-zinc-900 dark:text-zinc-100">{t('hero.circuit')}</span>
               <span className="text-zinc-900 dark:text-zinc-100"> </span>
-              <span className="text-zinc-400 dark:text-zinc-600">Posters</span>
+              <span className="text-zinc-400 dark:text-zinc-600">{t('hero.posters')}</span>
             </h1>
             
             <p className="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 mb-8 max-w-2xl mx-auto font-light">
-              Crea posters minimalistas de tus circuitos favoritos de F1
+              {t('hero.subtitle')}
             </p>
           </div>
           <BackgroundBeams />
@@ -68,10 +76,10 @@ function App() {
                 <Road className="w-16 h-16 text-zinc-400 dark:text-zinc-600" />
               </div>
               <h2 className="text-3xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
-                Selecciona un circuito
+                {t('emptyState.title')}
               </h2>
               <p className="text-zinc-600 dark:text-zinc-400 max-w-md mx-auto">
-                Haz clic en cualquier circuito del mapa para comenzar a crear tu póster personalizado.
+                {t('emptyState.description')}
               </p>
             </div>
           )}
@@ -88,10 +96,10 @@ function App() {
               </div>
             </div>
             <h3 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100 mb-2">
-              Todos los circuitos
+              {t('features.allCircuits.title')}
             </h3>
             <p className="text-zinc-600 dark:text-zinc-400">
-              Accede a la colección completa de circuitos de la F1 en 2026.
+              {t('features.allCircuits.description')}
             </p>
           </div>
           
@@ -102,10 +110,10 @@ function App() {
               </div>
             </div>
             <h3 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100 mb-2">
-              Personalizable
+              {t('features.customizable.title')}
             </h3>
             <p className="text-zinc-600 dark:text-zinc-400">
-              Elige colores, estilos de mapa y ajusta cada detalle.
+              {t('features.customizable.description')}
             </p>
           </div>
           
@@ -116,10 +124,10 @@ function App() {
               </div>
             </div>
             <h3 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100 mb-2">
-              Alta calidad
+              {t('features.highQuality.title')}
             </h3>
             <p className="text-zinc-600 dark:text-zinc-400">
-              Descarga en 300 DPI listo para imprimir.
+              {t('features.highQuality.description')}
             </p>
           </div>
         </div>
@@ -129,7 +137,7 @@ function App() {
       <footer className="py-12 px-6 border-t border-zinc-200 dark:border-zinc-800">
         <div className="max-w-6xl mx-auto text-center">
           <p className="text-zinc-500 dark:text-zinc-400 text-sm font-mono mb-4">
-            F1 POSTER MAKER — 2026
+            {t('footer.copyright')}
           </p>
           <div className="flex items-center justify-center gap-4">
             <a 
@@ -137,7 +145,7 @@ function App() {
               target="_blank" 
               rel="noopener noreferrer"
               className="opacity-60 hover:opacity-100 transition-opacity"
-              aria-label="X (Twitter)"
+              aria-label={t('footer.twitter')}
             >
               <img src={xIcon} alt="X" className="w-5 h-5 dark:hidden" />
               <img src={xIconDark} alt="X" className="w-5 h-5 hidden dark:block" />
@@ -147,7 +155,7 @@ function App() {
               target="_blank" 
               rel="noopener noreferrer"
               className="opacity-60 hover:opacity-100 transition-opacity"
-              aria-label="GitHub"
+              aria-label={t('footer.github')}
             >
               <img src={githubIconLight} alt="GitHub" className="w-5 h-5 dark:hidden" />
               <img src={githubIconDark} alt="GitHub" className="w-5 h-5 hidden dark:block" />

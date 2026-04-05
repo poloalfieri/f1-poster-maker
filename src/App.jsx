@@ -11,7 +11,7 @@ import xIcon from './assets/x.svg'
 import xIconDark from './assets/x_dark.svg'
 import githubIconLight from './assets/github_light.svg'
 import githubIconDark from './assets/github_dark.svg'
-import {Analytics} from "@vercel/analytics/next";
+import {Analytics} from "@vercel/analytics/react";
 
 function App() {
   const { t } = useTranslation();

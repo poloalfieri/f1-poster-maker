@@ -1,6 +1,7 @@
 import './App.css'
 import { CircuitMap } from './components/CircuitMap'
 import { BackgroundBeams } from './components/ui/background-beams'
+import { Flag, Palette, Printer } from 'lucide-react'
 import React from "react";
 
 function App() {
@@ -10,7 +11,7 @@ function App() {
       <section className="relative px-6 py-12">
         <div className="max-w-7xl mx-auto w-full">
           {/* Header - Text */}
-          <div className="text-center mb-12">
+          <div className="relative z-10 text-center mb-12 pointer-events-none">
             <div className="inline-block mb-4">
               <span className="text-sm font-mono text-zinc-500 dark:text-zinc-400 tracking-wider">
                 FORMULA 1
@@ -60,7 +61,11 @@ function App() {
       <section className="py-24 px-6">
         <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-12">
           <div className="text-center">
-            <div className="text-4xl mb-4">🏁</div>
+            <div className="flex justify-center mb-4">
+              <div className="p-3 bg-zinc-100 dark:bg-zinc-800 rounded-xl">
+                <Flag className="w-8 h-8 text-zinc-900 dark:text-zinc-100" />
+              </div>
+            </div>
             <h3 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100 mb-2">
               Todos los circuitos
             </h3>
@@ -70,7 +75,11 @@ function App() {
           </div>
           
           <div className="text-center">
-            <div className="text-4xl mb-4">🎨</div>
+            <div className="flex justify-center mb-4">
+              <div className="p-3 bg-zinc-100 dark:bg-zinc-800 rounded-xl">
+                <Palette className="w-8 h-8 text-zinc-900 dark:text-zinc-100" />
+              </div>
+            </div>
             <h3 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100 mb-2">
               Personalizable
             </h3>
@@ -80,7 +89,11 @@ function App() {
           </div>
           
           <div className="text-center">
-            <div className="text-4xl mb-4">📐</div>
+            <div className="flex justify-center mb-4">
+              <div className="p-3 bg-zinc-100 dark:bg-zinc-800 rounded-xl">
+                <Printer className="w-8 h-8 text-zinc-900 dark:text-zinc-100" />
+              </div>
+            </div>
             <h3 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100 mb-2">
               Alta calidad
             </h3>

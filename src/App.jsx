@@ -3,8 +3,12 @@ import { useState, useRef } from 'react'
 import { CircuitMap } from './components/CircuitMap'
 import { PosterGenerator } from './components/PosterGenerator'
 import { BackgroundBeams } from './components/ui/background-beams'
-import { Flag, Palette, Printer } from 'lucide-react'
+import {Flag, Palette, Printer, Road} from 'lucide-react'
 import React from "react";
+import xIcon from './assets/x.svg'
+import xIconDark from './assets/x_dark.svg'
+import githubIconLight from './assets/github_light.svg'
+import githubIconDark from './assets/github_dark.svg'
 
 function App() {
   const [selectedCircuit, setSelectedCircuit] = useState(null);
@@ -61,13 +65,13 @@ function App() {
           ) : (
             <div className="text-center py-20">
               <div className="inline-block p-6 bg-zinc-100 dark:bg-zinc-800 rounded-2xl mb-6">
-                <Flag className="w-16 h-16 text-zinc-400 dark:text-zinc-600" />
+                <Road className="w-16 h-16 text-zinc-400 dark:text-zinc-600" />
               </div>
               <h2 className="text-3xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
                 Selecciona un circuito
               </h2>
               <p className="text-zinc-600 dark:text-zinc-400 max-w-md mx-auto">
-                Haz clic en cualquier circuito del mapa para comenzar a crear tu póster personalizado
+                Haz clic en cualquier circuito del mapa para comenzar a crear tu póster personalizado.
               </p>
             </div>
           )}
@@ -124,9 +128,31 @@ function App() {
       {/* Footer */}
       <footer className="py-12 px-6 border-t border-zinc-200 dark:border-zinc-800">
         <div className="max-w-6xl mx-auto text-center">
-          <p className="text-zinc-500 dark:text-zinc-400 text-sm font-mono">
+          <p className="text-zinc-500 dark:text-zinc-400 text-sm font-mono mb-4">
             F1 POSTER MAKER — 2026
           </p>
+          <div className="flex items-center justify-center gap-4">
+            <a 
+              href="https://x.com/nacho_pedemonte"
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="opacity-60 hover:opacity-100 transition-opacity"
+              aria-label="X (Twitter)"
+            >
+              <img src={xIcon} alt="X" className="w-5 h-5 dark:hidden" />
+              <img src={xIconDark} alt="X" className="w-5 h-5 hidden dark:block" />
+            </a>
+            <a 
+              href="https://github.com/ipedemonteb"
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="opacity-60 hover:opacity-100 transition-opacity"
+              aria-label="GitHub"
+            >
+              <img src={githubIconLight} alt="GitHub" className="w-5 h-5 dark:hidden" />
+              <img src={githubIconDark} alt="GitHub" className="w-5 h-5 hidden dark:block" />
+            </a>
+          </div>
         </div>
       </footer>
     </div>

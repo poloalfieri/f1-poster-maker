@@ -72,9 +72,6 @@ export function PosterGenerator({ circuit }) {
       const geojson = await resp.json();
       let coords = (geojson.features) ? geojson.features[0].geometry.coordinates : geojson.geometry.coordinates;
 
-      const centerX = lng2t(CLng, zoom);
-      const centerY = lat2t(CLat, zoom);
-
       const mapDisplayW = PW - (sidePadding * 2);
       const mapDisplayH = textAreaTop - topPadding;
 

@@ -61,8 +61,8 @@ export function PosterControls({
       id: 'zoom',
       type: 'range',
       icon: Settings,
-      min: 13,
-      max: 19,
+      min: 12,
+      max: 20,
       step: 0.1,
       showValue: true,
     },
@@ -71,7 +71,7 @@ export function PosterControls({
       id: 'trackWidth',
       type: 'range',
       icon: Settings,
-      min: 1,
+      min: 2,
       max: 15,
       step: 1,
       showValue: true,
@@ -82,7 +82,7 @@ export function PosterControls({
       type: 'range',
       icon: Type,
       min: 0.5,
-      max: 2.0,
+      max: 1.4,
       step: 0.1,
       showValue: true,
     },
@@ -252,9 +252,9 @@ export function PosterControls({
           <div className="space-y-1.5 text-xs text-blue-900 dark:text-blue-200">
             <p className="font-semibold">Tips para el mejor resultado:</p>
             <ul className="space-y-0.5 text-xs leading-relaxed">
-              <li>• Tamaños comunes: 50×70, 40×60, 30×40 cm</li>
+              <li>• Tamaños comunes: 40×56, 30×42, 50×70 cm</li>
               <li>• 300 DPI es ideal para impresión profesional</li>
-              <li>• Ajusta el zoom para encuadrar el circuito</li>
+              <li>• Ajusta el zoom para encuadrar el circuito perfectamente</li>
             </ul>
           </div>
         </div>

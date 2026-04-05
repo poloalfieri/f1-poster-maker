@@ -40,22 +40,6 @@ export function CircuitMap({ onCircuitSelect }) {
                     {circuit.country}
                   </p>
                 </div>
-
-                {/*<div className="grid grid-cols-3 gap-2 py-2 border-y border-zinc-200 dark:border-zinc-700">*/}
-                {/*  <div className="text-center">*/}
-                {/*    <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-0.5">Primer GP</p>*/}
-                {/*    <p className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">{circuit.firstGP}</p>*/}
-                {/*  </div>*/}
-                {/*  <div className="text-center">*/}
-                {/*    <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-0.5">Longitud</p>*/}
-                {/*    <p className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">{circuit.length}</p>*/}
-                {/*  </div>*/}
-                {/*  <div className="text-center">*/}
-                {/*    <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-0.5">Vueltas</p>*/}
-                {/*    <p className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">{circuit.laps}</p>*/}
-                {/*  </div>*/}
-                {/*</div>*/}
-
                 <Button
                   onClick={() => handleCreatePoster(circuit)}
                   className="w-full bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-zinc-200 text-white dark:text-zinc-900"

@@ -20,11 +20,11 @@ export function PosterGenerator({ circuit }) {
 
   const [settings, setSettings] = useState({
     mapStyle: 'light_nolabels',
-    zoom: 18.1,
-    trackWidth: 7,
-    resolution: '5906x8268', // 300 DPI default
-    posterWidth: 50, // cm
-    posterHeight: 70, // cm
+    zoom: 15.5,
+    trackWidth: 8,
+    resolution: '4724x6614', // 300 DPI default
+    posterWidth: 40, // cm
+    posterHeight: 56, // cm
     dpi: 300,
     textSize: 1.0, // multiplier
     showText: true,
@@ -180,23 +180,28 @@ export function PosterGenerator({ circuit }) {
 
       // Texto
       if (showText) {
+        // 1. Nombre del circuito
         ctx.textAlign = "center";
         ctx.fillStyle = "#1a1a1a";
         ctx.font = `bold ${Math.round(PW * 0.042 * textSize)}px "Helvetica Neue", Helvetica, Arial`;
         ctx.letterSpacing = "6px";
         ctx.fillText(circuit.displayName || circuit.name.toUpperCase(), PW / 2, PH - textMargin);
 
-        ctx.font = `300 ${Math.round(PW * 0.018 * textSize)}px "Helvetica Neue", Helvetica`;
+        // 2. País
+        // CAMBIOS: Peso de 300 a 500. Tamaño de 0.028 a 0.032. Posición Y levemente ajustada.
+        ctx.font = `350 ${Math.round(PW * 0.032 * textSize)}px "Helvetica Neue", Helvetica`;
         ctx.letterSpacing = "4px";
-        ctx.fillText(`— ${circuit.country.toUpperCase()} —`, PW / 2, PH - textMargin + (PW * 0.04));
+        ctx.fillText(`— ${circuit.country.toUpperCase()} —`, PW / 2, PH - textMargin + (PW * 0.05));
 
-        ctx.font = `400 ${Math.round(PW * 0.011 * textSize)}px "Helvetica Neue", Helvetica`;
-        ctx.fillStyle = "#777";
-        ctx.letterSpacing = "1px";
+        // 3. Detalles del circuito
+        // CAMBIOS: Peso de 400 a 500. Tamaño de 0.016 a 0.022. Color levemente más oscuro.
+        ctx.font = `300 ${Math.round(PW * 0.022 * textSize)}px "Helvetica Neue", Helvetica`;
+        ctx.fillStyle = "#555555"; // Lo oscurecí un poco de #777 para darle más cuerpo
+        ctx.letterSpacing = "4px"; // Un poco más de tracking ayuda a la legibilidad
         ctx.fillText(
-          `First Grand Prix ${circuit.firstGP} / Number of Laps ${circuit.laps} / Circuit Length ${circuit.length}`,
-          PW / 2,
-          PH - textMargin + (PW * 0.075)
+            `First Grand Prix ${circuit.firstGP} / Number of Laps ${circuit.laps} / Circuit Length ${circuit.length}`,
+            PW / 2,
+            PH - textMargin + (PW * 0.09) // Bajamos un poco más la línea por el nuevo tamaño
         );
       }
 

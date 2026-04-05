@@ -1,4 +1,4 @@
-import { Map, MapMarker, MarkerContent, MarkerPopup, MapControls } from './ui/map';
+import {Map, MapMarker, MarkerContent, MarkerPopup, MapControls, MarkerTooltip} from './ui/map';
 import { Button } from "@/components/ui/button";
 import { useTranslation } from 'react-i18next';
 import circuits from '@/data/circuits.json';
@@ -26,6 +26,7 @@ export function CircuitMap({ onCircuitSelect }) {
             <MarkerContent>
               <div className="bg-zinc-900 dark:bg-zinc-100 size-4 rounded-full border-2 border-white dark:border-zinc-900 shadow-lg cursor-pointer hover:scale-125 transition-all duration-200 animate-pulse" />
             </MarkerContent>
+            <MarkerTooltip className="text-white bg-zinc-900 dark:text-zinc-900 dark:bg-zinc-100">{circuit.name}</MarkerTooltip>
             <MarkerPopup className="p-0 w-64 border-zinc-200 dark:border-zinc-700 dark:bg-zinc-900 bg-zinc-50">
               <div className="relative overflow-hidden max-h-26 rounded-t-md">
                 <img

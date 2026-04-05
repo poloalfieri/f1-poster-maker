@@ -2,7 +2,7 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Slider } from './ui/slider';
-import { Download, Sparkles, Settings, Image, Type, Palette, Ruler } from 'lucide-react';
+import { Download, Sparkles, Settings, Image, Type, Palette, Ruler, Move } from 'lucide-react';
 
 export function PosterControls({ 
   settings, 
@@ -67,6 +67,26 @@ export function PosterControls({
       showValue: true,
     },
     {
+      label: 'Desplazamiento Latitud',
+      id: 'latOffset',
+      type: 'range',
+      icon: Move,
+      min: -0.02,
+      max: 0.02,
+      step: 0.001,
+      showValue: true,
+    },
+    {
+      label: 'Desplazamiento Longitud',
+      id: 'lngOffset',
+      type: 'range',
+      icon: Move,
+      min: -0.02,
+      max: 0.02,
+      step: 0.001,
+      showValue: true,
+    },
+    {
       label: 'Grosor Pista',
       id: 'trackWidth',
       type: 'range',
@@ -98,12 +118,14 @@ export function PosterControls({
     },
     {
       label: 'Borde Decorativo Mapa',
-      id: 'showBorder',
-      type: 'boolean',
+      id: 'borderWidth',
+      type: 'select',
       icon: Settings,
       options: [
-        { value: false, label: 'Sin borde' },
-        { value: true, label: 'Borde fino (1px)' },
+        { value: 0, label: 'Sin borde' },
+        { value: 1, label: 'Borde fino (1px)' },
+        { value: 2, label: 'Borde medio (2px)' },
+        { value: 3, label: 'Borde grueso (3px)' },
       ]
     },
   ];
@@ -140,9 +162,13 @@ export function PosterControls({
                 {control.type === 'select' && (
                   <Select
                     value={String(settings[control.id])}
-                    onValueChange={(value) => 
-                      onSettingChange(control.id, control.id === 'dpi' ? parseInt(value) : value)
-                    }
+                    onValueChange={(value) => {
+                      // Convertir a número si es DPI o borderWidth
+                      const parsedValue = (control.id === 'dpi' || control.id === 'borderWidth') 
+                        ? parseInt(value) 
+                        : value;
+                      onSettingChange(control.id, parsedValue);
+                    }}
                   >
                     <SelectTrigger className="w-full h-9 text-xs">
                       <SelectValue />

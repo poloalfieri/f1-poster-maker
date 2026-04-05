@@ -28,7 +28,9 @@ export function PosterGenerator({ circuit }) {
     dpi: 300,
     textSize: 1.0, // multiplier
     showText: true,
-    showBorder: false,
+    borderWidth: 0, // 0, 1, 2, or 3 px
+    latOffset: 0, // desplazamiento de latitud
+    lngOffset: 0, // desplazamiento de longitud
   });
 
   const updateSetting = (key, value) => {
@@ -47,11 +49,11 @@ export function PosterGenerator({ circuit }) {
       const sidePadding = PW * 0.04;
       const topPadding = PW * 0.04;
 
-      const { zoom, mapStyle, trackWidth, showText, showBorder, textSize } = settings;
+      const { zoom, mapStyle, trackWidth, showText, borderWidth, textSize, latOffset, lngOffset } = settings;
       
-      // Coordenadas del circuito
-      const CLng = circuit.lng;
-      const CLat = circuit.lat;
+      // Coordenadas del circuito con desplazamiento
+      const CLng = circuit.lng + lngOffset;
+      const CLat = circuit.lat + latOffset;
 
       // Escalado
       const baseZoom = Math.floor(zoom);
@@ -172,9 +174,9 @@ export function PosterGenerator({ circuit }) {
       ctx.stroke();
 
       // Borde del mapa
-      if (showBorder) {
+      if (borderWidth > 0) {
         ctx.strokeStyle = "#bbb";
-        ctx.lineWidth = 1.2 * scaleFactor;
+        ctx.lineWidth = borderWidth * scaleFactor;
         ctx.strokeRect(sidePadding, topPadding, mapDisplayW, mapDisplayH);
       }
 

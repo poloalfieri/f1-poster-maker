@@ -2,7 +2,7 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Slider } from './ui/slider';
-import { Download, Sparkles, Settings, Image, Type, Palette, Ruler, Move } from 'lucide-react';
+import {Download, Sparkles, Settings, Image, Type, Palette, Ruler, Move, Lightbulb} from 'lucide-react';
 
 export function PosterControls({ 
   settings, 
@@ -276,19 +276,7 @@ export function PosterControls({
           })}
         </div>
       </div>
-
-      {/* Progress Bar */}
-      {isGenerating && (
-        <div className="bg-zinc-100 dark:bg-zinc-800 rounded-full h-2.5 overflow-hidden border border-zinc-200 dark:border-zinc-700">
-          <div
-            className="h-full bg-gradient-to-r from-zinc-900 via-zinc-700 to-zinc-900 dark:from-zinc-100 dark:via-zinc-300 dark:to-zinc-100 transition-all duration-300 relative overflow-hidden"
-            style={{ width: `${progress}%` }}
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
-          </div>
-        </div>
-      )}
-
+      
       {/* Action Buttons */}
       <div className="flex flex-col gap-2.5">
         <Button
@@ -318,7 +306,7 @@ export function PosterControls({
         <div className="flex gap-2.5">
           <div className="flex-shrink-0">
             <div className="w-8 h-8 rounded-full bg-blue-500 dark:bg-blue-600 flex items-center justify-center">
-              <span className="text-base">💡</span>
+              <Lightbulb className="size-5 text-white">💡</Lightbulb>
             </div>
           </div>
           <div className="space-y-1.5 text-xs text-blue-900 dark:text-blue-200">

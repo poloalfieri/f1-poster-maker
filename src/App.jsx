@@ -87,7 +87,7 @@ function App() {
               Todos los circuitos
             </h3>
             <p className="text-zinc-600 dark:text-zinc-400">
-              Accede a la colección completa de circuitos históricos de F1
+              Accede a la colección completa de circuitos de la F1 en 2026.
             </p>
           </div>
           
@@ -101,7 +101,7 @@ function App() {
               Personalizable
             </h3>
             <p className="text-zinc-600 dark:text-zinc-400">
-              Elige colores, estilos de mapa y ajusta cada detalle
+              Elige colores, estilos de mapa y ajusta cada detalle.
             </p>
           </div>
           
@@ -115,7 +115,7 @@ function App() {
               Alta calidad
             </h3>
             <p className="text-zinc-600 dark:text-zinc-400">
-              Descarga en 300 DPI listo para imprimir
+              Descarga en 300 DPI listo para imprimir.
             </p>
           </div>
         </div>

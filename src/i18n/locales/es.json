@@ -3,11 +3,17 @@
     "formula1": "FORMULA 1",
     "circuit": "Circuit",
     "posters": "Posters",
-    "subtitle": "Crea posters minimalistas de tus circuitos favoritos de F1"
+    "subtitle": "Crea posters minimalistas de tus circuitos de F1 favoritos y cualquier lugar del mundo"
+  },
+  "mode": {
+    "circuits": "Circuitos F1",
+    "freeMap": "Mapa Libre"
   },
   "emptyState": {
     "title": "Selecciona un circuito",
-    "description": "Haz clic en cualquier circuito del mapa para comenzar a crear tu póster personalizado."
+    "description": "Haz clic en cualquier circuito del mapa para comenzar a crear tu póster personalizado.",
+    "titleFreeMap": "Editá tu mapa",
+    "descriptionFreeMap": "Navegá el mapa, cargá las calles del área y toggleá las que quieras incluir."
   },
   "features": {
     "allCircuits": {
@@ -30,7 +36,24 @@
   },
   "generator": {
     "header": "GENERADOR DE PÓSTER",
-    "error": "Error al generar el póster. Por favor intenta de nuevo."
+    "error": "Error al generar el póster. Por favor intenta de nuevo.",
+    "freeMapTitle": "Mapa Personalizado",
+    "streetsLoaded": "calles seleccionadas"
+  },
+  "streetEditor": {
+    "instructionsTitle": "Cómo usarlo",
+    "step1": "Navegá a cualquier lugar",
+    "step2": "Hacé clic en \"Cargar calles\"",
+    "step3": "Hacé clic en calles para ocultarlas",
+    "loadButton": "Cargar calles del área",
+    "loading": "Cargando...",
+    "createButton": "Crear Póster",
+    "streetsVisible": "Calles visibles",
+    "resetAll": "Mostrar todas",
+    "clickHint": "Hacé clic en una calle para ocultarla — volvé a hacer clic para mostrarla",
+    "zoomInWarning": "Hacé más zoom antes de cargar calles.",
+    "noStreetsFound": "No se encontraron calles en esta área.",
+    "loadError": "Error al cargar calles. Por favor intentá de nuevo."
   },
   "controls": {
     "header": "Personalización",
@@ -42,7 +65,11 @@
     "zoom": "Zoom (Encuadre)",
     "latitude": "Latitud",
     "longitude": "Longitud",
-    "trackWidth": "Grosor Pista",
+    "trackWidth": "Grosor de línea",
+    "customTitle": "Título",
+    "customTitlePlaceholder": "Ej: Mi barrio",
+    "customSubtitle": "Subtítulo",
+    "customSubtitlePlaceholder": "Ej: Buenos Aires, Argentina",
     "textSize": "Tamaño de Texto",
     "includeText": "Incluir Texto",
     "mapBorder": "Borde Decorativo Mapa",

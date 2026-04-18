@@ -20,9 +20,11 @@ export function PosterGenerator({ circuit }) {
   const [progress, setProgress] = useState(0);
   const [previewUrl, setPreviewUrl] = useState(null);
 
+  const isFreeMap = circuit.type === 'freeMap';
+
   const [settings, setSettings] = useState({
     mapStyle: 'light_nolabels',
-    zoom: 15.5,
+    zoom: isFreeMap ? circuit.zoom ?? 14 : 15.5,
     trackWidth: 8,
     resolution: '4724x6614', // 300 DPI default
     posterWidth: 40, // cm
@@ -33,6 +35,8 @@ export function PosterGenerator({ circuit }) {
     borderWidth: 0, // 0, 1, 2, or 3 px
     latOffset: 0, // desplazamiento de latitud
     lngOffset: 0, // desplazamiento de longitud
+    customTitle: '',
+    customSubtitle: '',
   });
 
   const updateSetting = (key, value) => {
@@ -69,10 +73,15 @@ export function PosterGenerator({ circuit }) {
 
       setProgress(20);
 
-      // Cargar GeoJSON del circuito
-      const resp = await fetch(`https://cdn.jsdelivr.net/gh/bacinger/f1-circuits@master/circuits/${circuit.geojsonId}.geojson`);
-      const geojson = await resp.json();
-      let coords = (geojson.features) ? geojson.features[0].geometry.coordinates : geojson.geometry.coordinates;
+      let allStreetCoords = [];
+      if (isFreeMap) {
+        allStreetCoords = circuit.streets.map(s => s.coords);
+      } else {
+        const resp = await fetch(`https://cdn.jsdelivr.net/gh/bacinger/f1-circuits@master/circuits/${circuit.geojsonId}.geojson`);
+        const geojson = await resp.json();
+        const coords = (geojson.features) ? geojson.features[0].geometry.coordinates : geojson.geometry.coordinates;
+        allStreetCoords = [coords];
+      }
 
       const mapDisplayW = PW - (sidePadding * 2);
       const mapDisplayH = textAreaTop - topPadding;
@@ -147,14 +156,13 @@ export function PosterGenerator({ circuit }) {
 
       setProgress(80);
 
-      // Dibujar circuito
+      // Dibujar calles/circuito
       const scaleFactor = PW / 1200;
       const gps2px = (lng, lat) => ({
         x: (lng2t(lng, zoom) - startTileX * scale) * TS - offsetX + sidePadding,
         y: (lat2t(lat, zoom) - startTileY * scale) * TS - offsetY + topPadding
       });
 
-      // Aplicar clipping para que el circuito no sobrepase el área del mapa
       ctx.save();
       ctx.beginPath();
       ctx.rect(sidePadding, topPadding, mapDisplayW, mapDisplayH);
@@ -162,23 +170,23 @@ export function PosterGenerator({ circuit }) {
 
       ctx.lineJoin = "round";
       ctx.lineCap = "round";
-      ctx.beginPath();
-      coords.forEach((c, i) => {
-        const p = gps2px(c[0], c[1]);
-        i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y);
-      });
 
-      // Sombra blanca
-      ctx.strokeStyle = "rgba(255,255,255,0.4)";
-      ctx.lineWidth = (trackWidth + 4) * scaleFactor;
-      ctx.stroke();
+      const drawPath = (coordsList, strokeStyle, lineWidth) => {
+        coordsList.forEach(coords => {
+          ctx.beginPath();
+          coords.forEach((c, i) => {
+            const p = gps2px(c[0], c[1]);
+            i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y);
+          });
+          ctx.strokeStyle = strokeStyle;
+          ctx.lineWidth = lineWidth;
+          ctx.stroke();
+        });
+      };
 
-      // Línea del circuito
-      ctx.strokeStyle = "#111";
-      ctx.lineWidth = trackWidth * scaleFactor;
-      ctx.stroke();
+      drawPath(allStreetCoords, "rgba(255,255,255,0.4)", (trackWidth + 4) * scaleFactor);
+      drawPath(allStreetCoords, "#111", trackWidth * scaleFactor);
 
-      // Restaurar el contexto para que el clipping no afecte otros elementos
       ctx.restore();
 
       // Borde del mapa
@@ -190,29 +198,43 @@ export function PosterGenerator({ circuit }) {
 
       // Texto
       if (showText) {
-        // 1. Nombre del circuito
         ctx.textAlign = "center";
         ctx.fillStyle = "#1a1a1a";
-        ctx.font = `bold ${Math.round(PW * 0.042 * textSize)}px "Helvetica Neue", Helvetica, Arial`;
-        ctx.letterSpacing = "6px";
-        ctx.fillText(circuit.displayName || circuit.name.toUpperCase(), PW / 2, PH - textMargin);
 
-        // 2. País
-        // CAMBIOS: Peso de 300 a 500. Tamaño de 0.028 a 0.032. Posición Y levemente ajustada.
-        ctx.font = `350 ${Math.round(PW * 0.032 * textSize)}px "Helvetica Neue", Helvetica`;
-        ctx.letterSpacing = "4px";
-        ctx.fillText(`— ${circuit.country.toUpperCase()} —`, PW / 2, PH - textMargin + (PW * 0.05));
+        if (isFreeMap) {
+          const title = settings.customTitle || circuit.displayName;
+          const subtitle = settings.customSubtitle;
 
-        // 3. Detalles del circuito
-        // CAMBIOS: Peso de 400 a 500. Tamaño de 0.016 a 0.022. Color levemente más oscuro.
-        ctx.font = `300 ${Math.round(PW * 0.022 * textSize)}px "Helvetica Neue", Helvetica`;
-        ctx.fillStyle = "#555555"; // Lo oscurecí un poco de #777 para darle más cuerpo
-        ctx.letterSpacing = "4px"; // Un poco más de tracking ayuda a la legibilidad
-        ctx.fillText(
+          ctx.font = `bold ${Math.round(PW * 0.042 * textSize)}px "Helvetica Neue", Helvetica, Arial`;
+          ctx.letterSpacing = "6px";
+          ctx.fillText(title.toUpperCase(), PW / 2, PH - textMargin);
+
+          if (subtitle) {
+            ctx.font = `350 ${Math.round(PW * 0.032 * textSize)}px "Helvetica Neue", Helvetica`;
+            ctx.letterSpacing = "4px";
+            ctx.fillText(`— ${subtitle.toUpperCase()} —`, PW / 2, PH - textMargin + (PW * 0.05));
+          }
+        } else {
+          // 1. Nombre del circuito
+          ctx.font = `bold ${Math.round(PW * 0.042 * textSize)}px "Helvetica Neue", Helvetica, Arial`;
+          ctx.letterSpacing = "6px";
+          ctx.fillText(circuit.displayName || circuit.name.toUpperCase(), PW / 2, PH - textMargin);
+
+          // 2. País
+          ctx.font = `350 ${Math.round(PW * 0.032 * textSize)}px "Helvetica Neue", Helvetica`;
+          ctx.letterSpacing = "4px";
+          ctx.fillText(`— ${circuit.country.toUpperCase()} —`, PW / 2, PH - textMargin + (PW * 0.05));
+
+          // 3. Detalles del circuito
+          ctx.font = `300 ${Math.round(PW * 0.022 * textSize)}px "Helvetica Neue", Helvetica`;
+          ctx.fillStyle = "#555555";
+          ctx.letterSpacing = "4px";
+          ctx.fillText(
             `${t('poster.text.firstGP')} ${circuit.firstGP} / ${t('poster.text.laps')} ${circuit.laps} / ${t('poster.text.length')} ${circuit.length}`,
             PW / 2,
-            PH - textMargin + (PW * 0.09) // Bajamos un poco más la línea por el nuevo tamaño
-        );
+            PH - textMargin + (PW * 0.09)
+          );
+        }
       }
 
       setProgress(90);
@@ -242,7 +264,10 @@ export function PosterGenerator({ circuit }) {
   const downloadPoster = () => {
     if (previewUrl) {
       const link = document.createElement('a');
-      link.download = `${circuit.name.replace(/\s+/g, '_')}_Poster.png`;
+      const filename = isFreeMap
+        ? `${(settings.customTitle || 'Custom_Map').replace(/\s+/g, '_')}_Poster.png`
+        : `${circuit.name.replace(/\s+/g, '_')}_Poster.png`;
+      link.download = filename;
       link.href = previewUrl;
       link.click();
     }
@@ -256,11 +281,18 @@ export function PosterGenerator({ circuit }) {
           {t('generator.header')}
         </span>
         <h2 className="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-zinc-100 mt-3 tracking-tight">
-          {circuit.name}
+          {isFreeMap ? (settings.customTitle || t('generator.freeMapTitle')) : circuit.name}
         </h2>
-        <p className="text-zinc-600 dark:text-zinc-400 mt-1.5">
-          {circuit.country}
-        </p>
+        {!isFreeMap && (
+          <p className="text-zinc-600 dark:text-zinc-400 mt-1.5">
+            {circuit.country}
+          </p>
+        )}
+        {isFreeMap && (
+          <p className="text-zinc-500 dark:text-zinc-500 mt-1.5 text-sm">
+            {circuit.streets.length} {t('generator.streetsLoaded')}
+          </p>
+        )}
       </div>
 
       {/* Content Grid - Preview left, Controls right (side by side) */}
@@ -284,6 +316,7 @@ export function PosterGenerator({ circuit }) {
             progress={progress}
             onDownload={downloadPoster}
             hasPreview={!!previewUrl}
+            isFreeMap={isFreeMap}
           />
         </div>
       </div>

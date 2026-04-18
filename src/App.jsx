@@ -2,10 +2,11 @@ import './App.css'
 import { useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { CircuitMap } from './components/CircuitMap'
+import { StreetEditor } from './components/StreetEditor'
 import { PosterGenerator } from './components/PosterGenerator'
 import { BackgroundBeams } from './components/ui/background-beams'
 import { LanguageSwitcher } from './components/LanguageSwitcher'
-import {Flag, Palette, Printer, Road} from 'lucide-react'
+import {Flag, Palette, Printer, Road, Map} from 'lucide-react'
 import React from "react";
 import xIcon from './assets/x.svg'
 import xIconDark from './assets/x_dark.svg'
@@ -15,18 +16,23 @@ import {Analytics} from "@vercel/analytics/react";
 
 function App() {
   const { t } = useTranslation();
-  const [selectedCircuit, setSelectedCircuit] = useState(null);
+  const [mode, setMode] = useState('circuits');
+  const [selectedItem, setSelectedItem] = useState(null);
   const generatorRef = useRef(null);
 
-  const handleCircuitSelect = (circuit) => {
-    setSelectedCircuit(circuit);
-    // Scroll suave a la sección del generador
+  const handleItemSelect = (item) => {
+    setSelectedItem(item);
     setTimeout(() => {
-      generatorRef.current?.scrollIntoView({ 
-        behavior: 'smooth', 
-        block: 'start' 
+      generatorRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
       });
     }, 100);
+  };
+
+  const handleModeChange = (newMode) => {
+    setMode(newMode);
+    setSelectedItem(null);
   };
 
   return (
@@ -41,7 +47,7 @@ function App() {
               </div>
 
               {/* Header - Text */}
-              <div className="relative z-10 text-center mb-12 pointer-events-none">
+              <div className="relative z-10 text-center mb-8 pointer-events-none">
                 <div className="inline-block mb-4">
                   <span className="text-sm font-mono text-zinc-500 dark:text-zinc-400 tracking-wider">
                     {t('hero.formula1')}
@@ -58,11 +64,42 @@ function App() {
                   {t('hero.subtitle')}
                 </p>
               </div>
+
+              {/* Mode Switcher */}
+              <div className="relative z-10 flex justify-center gap-2 mb-6 pointer-events-auto">
+                <button
+                  onClick={() => handleModeChange('circuits')}
+                  className={`px-5 py-2 rounded-full text-sm font-semibold transition-all duration-200 flex items-center gap-2 ${
+                    mode === 'circuits'
+                      ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-md'
+                      : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700'
+                  }`}
+                >
+                  <Flag className="w-3.5 h-3.5" />
+                  {t('mode.circuits')}
+                </button>
+                <button
+                  onClick={() => handleModeChange('freeMap')}
+                  className={`px-5 py-2 rounded-full text-sm font-semibold transition-all duration-200 flex items-center gap-2 ${
+                    mode === 'freeMap'
+                      ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-md'
+                      : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700'
+                  }`}
+                >
+                  <Map className="w-3.5 h-3.5" />
+                  {t('mode.freeMap')}
+                </button>
+              </div>
+
               <BackgroundBeams />
 
               {/* Map - Full width below */}
-              <div className="w-full">
-                <CircuitMap onCircuitSelect={handleCircuitSelect} />
+              <div className="w-full relative z-10">
+                {mode === 'circuits' ? (
+                  <CircuitMap onCircuitSelect={handleItemSelect} />
+                ) : (
+                  <StreetEditor onMapSelect={handleItemSelect} />
+                )}
               </div>
             </div>
           </section>
@@ -70,18 +107,21 @@ function App() {
           {/* Generator Section */}
           <section ref={generatorRef} className="py-24 px-6 bg-white dark:bg-zinc-900">
             <div className="max-w-7xl mx-auto">
-              {selectedCircuit ? (
-                <PosterGenerator circuit={selectedCircuit} />
+              {selectedItem ? (
+                <PosterGenerator circuit={selectedItem} />
               ) : (
                 <div className="text-center py-20">
                   <div className="inline-block p-6 bg-zinc-100 dark:bg-zinc-800 rounded-2xl mb-6">
-                    <Road className="w-16 h-16 text-zinc-400 dark:text-zinc-600" />
+                    {mode === 'circuits'
+                      ? <Road className="w-16 h-16 text-zinc-400 dark:text-zinc-600" />
+                      : <Map className="w-16 h-16 text-zinc-400 dark:text-zinc-600" />
+                    }
                   </div>
                   <h2 className="text-3xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
-                    {t('emptyState.title')}
+                    {mode === 'circuits' ? t('emptyState.title') : t('emptyState.titleFreeMap')}
                   </h2>
                   <p className="text-zinc-600 dark:text-zinc-400 max-w-md mx-auto">
-                    {t('emptyState.description')}
+                    {mode === 'circuits' ? t('emptyState.description') : t('emptyState.descriptionFreeMap')}
                   </p>
                 </div>
               )}

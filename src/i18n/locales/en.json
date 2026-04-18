@@ -3,11 +3,17 @@
     "formula1": "FORMULA 1",
     "circuit": "Circuit",
     "posters": "Posters",
-    "subtitle": "Create minimalist posters of your favorite F1 circuits"
+    "subtitle": "Create minimalist posters of your favorite F1 circuits and any place in the world"
+  },
+  "mode": {
+    "circuits": "F1 Circuits",
+    "freeMap": "Free Map"
   },
   "emptyState": {
     "title": "Select a circuit",
-    "description": "Click on any circuit on the map to start creating your personalized poster."
+    "description": "Click on any circuit on the map to start creating your personalized poster.",
+    "titleFreeMap": "Edit your map",
+    "descriptionFreeMap": "Navigate the map, load streets in view, toggle them and hit Create Poster."
   },
   "features": {
     "allCircuits": {
@@ -30,7 +36,24 @@
   },
   "generator": {
     "header": "POSTER GENERATOR",
-    "error": "Error generating poster. Please try again."
+    "error": "Error generating poster. Please try again.",
+    "freeMapTitle": "Custom Map",
+    "streetsLoaded": "streets selected"
+  },
+  "streetEditor": {
+    "instructionsTitle": "How to use",
+    "step1": "Navigate to any place",
+    "step2": "Click \"Load streets\"",
+    "step3": "Click streets to hide them",
+    "loadButton": "Load streets in view",
+    "loading": "Loading...",
+    "createButton": "Create Poster",
+    "streetsVisible": "Streets visible",
+    "resetAll": "Show all",
+    "clickHint": "Click on a street to hide it — click again to show it",
+    "zoomInWarning": "Zoom in more before loading streets.",
+    "noStreetsFound": "No streets found in this area.",
+    "loadError": "Error loading streets. Please try again."
   },
   "controls": {
     "header": "Customization",
@@ -42,7 +65,11 @@
     "zoom": "Zoom (Framing)",
     "latitude": "Latitude",
     "longitude": "Longitude",
-    "trackWidth": "Track Width",
+    "trackWidth": "Line Width",
+    "customTitle": "Title",
+    "customTitlePlaceholder": "e.g. My Neighborhood",
+    "customSubtitle": "Subtitle",
+    "customSubtitlePlaceholder": "e.g. Buenos Aires, Argentina",
     "textSize": "Text Size",
     "includeText": "Include Text",
     "mapBorder": "Decorative Map Border",

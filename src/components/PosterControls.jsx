@@ -5,19 +5,42 @@ import { Slider } from './ui/slider';
 import { useTranslation } from 'react-i18next';
 import {Download, Sparkles, Settings, Image, Type, Palette, Ruler, Move, Lightbulb} from 'lucide-react';
 
-export function PosterControls({ 
-  settings, 
-  onSettingChange, 
-  onGenerate, 
-  isGenerating, 
+export function PosterControls({
+  settings,
+  onSettingChange,
+  onGenerate,
+  isGenerating,
   progress,
   onDownload,
-  hasPreview 
+  hasPreview,
+  isFreeMap,
 }) {
   const { t } = useTranslation();
-  
+
   // Controles organizados: algunos en grid de 2 columnas, otros full width
   const controlLayout = [
+    ...(isFreeMap ? [
+      {
+        type: 'single',
+        control: {
+          label: t('controls.customTitle'),
+          id: 'customTitle',
+          type: 'text',
+          icon: Type,
+          placeholder: t('controls.customTitlePlaceholder'),
+        }
+      },
+      {
+        type: 'single',
+        control: {
+          label: t('controls.customSubtitle'),
+          id: 'customSubtitle',
+          type: 'text',
+          icon: Type,
+          placeholder: t('controls.customSubtitlePlaceholder'),
+        }
+      },
+    ] : []),
     {
       type: 'grid', // Grid de 2 columnas
       controls: [
@@ -211,6 +234,16 @@ export function PosterControls({
             step={control.step}
             value={settings[control.id]}
             onChange={(e) => onSettingChange(control.id, parseFloat(e.target.value))}
+            className="w-full h-9 text-xs"
+          />
+        )}
+
+        {control.type === 'text' && (
+          <Input
+            type="text"
+            value={settings[control.id]}
+            placeholder={control.placeholder}
+            onChange={(e) => onSettingChange(control.id, e.target.value)}
             className="w-full h-9 text-xs"
           />
         )}

@@ -50,7 +50,7 @@
     "createButton": "Crear Póster",
     "streetsVisible": "Calles visibles",
     "resetAll": "Mostrar todas",
-    "clickHint": "Hacé clic en una calle para ocultarla — volvé a hacer clic para mostrarla",
+    "clickHint": "Hacé clic en una calle para ocultarla — arrastrá para ocultar varias a la vez — hacé clic en una oculta para mostrarla",
     "zoomInWarning": "Hacé más zoom antes de cargar calles.",
     "noStreetsFound": "No se encontraron calles en esta área.",
     "loadError": "Error al cargar calles. Por favor intentá de nuevo."

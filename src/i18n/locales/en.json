@@ -50,7 +50,7 @@
     "createButton": "Create Poster",
     "streetsVisible": "Streets visible",
     "resetAll": "Show all",
-    "clickHint": "Click on a street to hide it — click again to show it",
+    "clickHint": "Click a street to hide it — drag to hide multiple at once — click a hidden street to show it",
     "zoomInWarning": "Zoom in more before loading streets.",
     "noStreetsFound": "No streets found in this area.",
     "loadError": "Error loading streets. Please try again."

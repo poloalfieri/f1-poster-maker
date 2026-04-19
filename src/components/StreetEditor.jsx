@@ -33,6 +33,7 @@ export function StreetEditor({ onMapSelect }) {
   const [hasStreets, setHasStreets] = useState(false);
   const [layersReady, setLayersReady] = useState(false);
   const layersReadyRef = useRef(false);
+  const [selectionBox, setSelectionBox] = useState(null);
 
   useEffect(() => {
     const isDark = document.documentElement.classList.contains('dark');
@@ -106,7 +107,10 @@ export function StreetEditor({ onMapSelect }) {
       paint: { 'line-color': 'transparent', 'line-width': 12 },
     });
 
+    let justDragged = false;
+
     const toggleStreet = (clickedId, newVisible) => {
+      if (justDragged) return;
       setStreets(prev => {
         const updated = prev.map(s => s.id === clickedId ? { ...s, visible: newVisible } : s);
         mapRef.current?.getSource('streets')?.setData(toGeoJSON(updated));
@@ -126,6 +130,125 @@ export function StreetEditor({ onMapSelect }) {
     map.on('mouseleave', 'streets-visible-hit', setCursor(''));
     map.on('mouseenter', 'streets-hidden-hit', setCursor('pointer'));
     map.on('mouseleave', 'streets-hidden-hit', setCursor(''));
+
+    // Segment-rectangle intersection in pixel space (Liang-Barsky)
+    const segmentCrossesBox = (x1, y1, x2, y2, minX, minY, maxX, maxY) => {
+      const dx = x2 - x1;
+      const dy = y2 - y1;
+      let tMin = 0;
+      let tMax = 1;
+      for (const [p, q] of [[-dx, x1 - minX], [dx, maxX - x1], [-dy, y1 - minY], [dy, maxY - y1]]) {
+        if (p === 0) { if (q < 0) return false; }
+        else {
+          const t = q / p;
+          if (p < 0) tMin = Math.max(tMin, t);
+          else tMax = Math.min(tMax, t);
+          if (tMin > tMax) return false;
+        }
+      }
+      return true;
+    };
+
+    // Project each street coord to pixels, then test against the pixel-space selection box
+    const streetIntersectsPixelBox = (s, minX, minY, maxX, maxY) => {
+      const px = s.coords.map(([lng, lat]) => {
+        const p = map.project([lng, lat]);
+        return [p.x, p.y];
+      });
+      for (const [x, y] of px) {
+        if (x >= minX && x <= maxX && y >= minY && y <= maxY) return true;
+      }
+      for (let i = 0; i < px.length - 1; i++) {
+        const [x1, y1] = px[i];
+        const [x2, y2] = px[i + 1];
+        if (segmentCrossesBox(x1, y1, x2, y2, minX, minY, maxX, maxY)) return true;
+      }
+      return false;
+    };
+
+    // Drag-to-select: click + drag creates a selection box that hides all visible streets inside
+    const canvas = map.getCanvas();
+    let dragStartX = 0;
+    let dragStartY = 0;
+    let dragging = false;
+    let listenersActive = false;
+
+    const cleanupDragListeners = () => {
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', onMouseUp);
+      listenersActive = false;
+    };
+
+    const onMouseMove = (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const dx = x - dragStartX;
+      const dy = y - dragStartY;
+
+      if (!dragging && (Math.abs(dx) > 5 || Math.abs(dy) > 5)) {
+        dragging = true;
+        map.dragPan.disable();
+      }
+
+      if (dragging) {
+        setSelectionBox({
+          x: Math.min(dragStartX, x),
+          y: Math.min(dragStartY, y),
+          width: Math.abs(dx),
+          height: Math.abs(dy),
+        });
+      }
+    };
+
+    const onMouseUp = (e) => {
+      cleanupDragListeners();
+
+      if (dragging) {
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const minX = Math.min(dragStartX, x);
+        const maxX = Math.max(dragStartX, x);
+        const minY = Math.min(dragStartY, y);
+        const maxY = Math.max(dragStartY, y);
+
+        setStreets(prev => {
+          const updated = prev.map(s => {
+            if (!s.visible) return s;
+            return streetIntersectsPixelBox(s, minX, minY, maxX, maxY)
+              ? { ...s, visible: false }
+              : s;
+          });
+          mapRef.current?.getSource('streets')?.setData(toGeoJSON(updated));
+          return updated;
+        });
+
+        setSelectionBox(null);
+        map.dragPan.enable();
+
+        // Block the MapLibre click event that fires after a drag
+        justDragged = true;
+        setTimeout(() => { justDragged = false; }, 200);
+      }
+
+      dragging = false;
+    };
+
+    const onMouseDown = (e) => {
+      if (e.button !== 0) return;
+      if (listenersActive) cleanupDragListeners();
+      const rect = canvas.getBoundingClientRect();
+      dragStartX = e.clientX - rect.left;
+      dragStartY = e.clientY - rect.top;
+      dragging = false;
+      listenersActive = true;
+      window.addEventListener('mousemove', onMouseMove);
+      window.addEventListener('mouseup', onMouseUp);
+    };
+
+    canvas.addEventListener('mousedown', onMouseDown);
 
     layersReadyRef.current = true;
     setLayersReady(true);
@@ -244,6 +367,19 @@ export function StreetEditor({ onMapSelect }) {
     <div className="w-full">
       <div className="w-full h-[500px] rounded-2xl overflow-hidden shadow-2xl border border-zinc-200 dark:border-zinc-800 relative">
         <div ref={mapContainerRef} className="w-full h-full" />
+
+        {/* Drag selection overlay */}
+        {selectionBox && (
+          <div
+            className="absolute pointer-events-none border-2 border-blue-500 bg-blue-500/20"
+            style={{
+              left: selectionBox.x,
+              top: selectionBox.y,
+              width: selectionBox.width,
+              height: selectionBox.height,
+            }}
+          />
+        )}
 
         {/* Top-left info badge */}
         {hasStreets && (

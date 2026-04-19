@@ -53,7 +53,12 @@
     "clickHint": "Click a street to hide it — drag to hide multiple at once — click a hidden street to show it",
     "zoomInWarning": "Zoom in more before loading streets.",
     "noStreetsFound": "No streets found in this area.",
-    "loadError": "Error loading streets. Please try again."
+    "loadError": "Error loading streets. Please try again.",
+    "drawButton": "Add street",
+    "drawCancel": "Cancel",
+    "drawModeActive": "Draw mode",
+    "drawClickStart": "Click the first endpoint of the street",
+    "drawClickEnd": "Click the second endpoint of the street"
   },
   "controls": {
     "header": "Customization",

@@ -2,7 +2,7 @@ import { useRef, useEffect, useState, useCallback } from 'react';
 import maplibregl from 'maplibre-gl';
 import { Button } from './ui/button';
 import { useTranslation } from 'react-i18next';
-import { RefreshCw, ArrowRight, Loader2 } from 'lucide-react';
+import { RefreshCw, ArrowRight, Loader2, PenLine, X } from 'lucide-react';
 
 const OVERPASS_ENDPOINTS = [
   'https://overpass.kumi.systems/api/interpreter',
@@ -34,6 +34,11 @@ export function StreetEditor({ onMapSelect }) {
   const [layersReady, setLayersReady] = useState(false);
   const layersReadyRef = useRef(false);
   const [selectionBox, setSelectionBox] = useState(null);
+  const [drawMode, setDrawMode] = useState(false);
+  const [drawPhase, setDrawPhase] = useState(0); // 0=idle, 1=waiting for end point
+  const drawModeRef = useRef(false);
+  const drawStartRef = useRef(null);
+  const drawMarkerRef = useRef(null);
 
   useEffect(() => {
     const isDark = document.documentElement.classList.contains('dark');
@@ -51,6 +56,42 @@ export function StreetEditor({ onMapSelect }) {
 
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
     mapRef.current = map;
+
+    map.on('load', () => {
+      map.on('click', (e) => {
+        if (!drawModeRef.current) return;
+        if (map.getSource('streets')) return; // handled by setupLayers handler
+        const { lng, lat } = e.lngLat;
+        if (!drawStartRef.current) {
+          drawStartRef.current = { lng, lat };
+          setDrawPhase(1);
+          const el = document.createElement('div');
+          el.style.cssText = 'width:12px;height:12px;border-radius:50%;background:#e63946;border:2px solid white;box-shadow:0 0 6px rgba(0,0,0,0.5);';
+          drawMarkerRef.current = new maplibregl.Marker({ element: el }).setLngLat([lng, lat]).addTo(map);
+        } else {
+          const start = drawStartRef.current;
+          const newStreet = {
+            id: `custom_${Date.now()}`,
+            name: '',
+            type: 'custom',
+            coords: [[start.lng, start.lat], [lng, lat]],
+            visible: true,
+          };
+          setStreets(prev => {
+            const updated = [...prev, newStreet];
+            setupLayers(map, toGeoJSON(updated));
+            return updated;
+          });
+          setHasStreets(true);
+          drawStartRef.current = null;
+          setDrawPhase(0);
+          if (drawMarkerRef.current) {
+            drawMarkerRef.current.remove();
+            drawMarkerRef.current = null;
+          }
+        }
+      });
+    });
 
     return () => {
       layersReadyRef.current = false;
@@ -110,7 +151,7 @@ export function StreetEditor({ onMapSelect }) {
     let justDragged = false;
 
     const toggleStreet = (clickedId, newVisible) => {
-      if (justDragged) return;
+      if (justDragged || drawModeRef.current) return;
       setStreets(prev => {
         const updated = prev.map(s => s.id === clickedId ? { ...s, visible: newVisible } : s);
         mapRef.current?.getSource('streets')?.setData(toGeoJSON(updated));
@@ -125,7 +166,10 @@ export function StreetEditor({ onMapSelect }) {
       if (e.features.length) toggleStreet(e.features[0].properties.id, true);
     });
 
-    const setCursor = (cursor) => () => { map.getCanvas().style.cursor = cursor; };
+    const setCursor = (cursor) => () => {
+      if (drawModeRef.current) return;
+      map.getCanvas().style.cursor = cursor;
+    };
     map.on('mouseenter', 'streets-visible-hit', setCursor('pointer'));
     map.on('mouseleave', 'streets-visible-hit', setCursor(''));
     map.on('mouseenter', 'streets-hidden-hit', setCursor('pointer'));
@@ -238,6 +282,7 @@ export function StreetEditor({ onMapSelect }) {
 
     const onMouseDown = (e) => {
       if (e.button !== 0) return;
+      if (drawModeRef.current) return;
       if (listenersActive) cleanupDragListeners();
       const rect = canvas.getBoundingClientRect();
       dragStartX = e.clientX - rect.left;
@@ -249,6 +294,44 @@ export function StreetEditor({ onMapSelect }) {
     };
 
     canvas.addEventListener('mousedown', onMouseDown);
+
+    map.on('click', (e) => {
+      if (!drawModeRef.current) return;
+      const { lng, lat } = e.lngLat;
+
+      if (!drawStartRef.current) {
+        drawStartRef.current = { lng, lat };
+        setDrawPhase(1);
+        const el = document.createElement('div');
+        el.style.cssText = 'width:12px;height:12px;border-radius:50%;background:#e63946;border:2px solid white;box-shadow:0 0 6px rgba(0,0,0,0.5);';
+        drawMarkerRef.current = new maplibregl.Marker({ element: el }).setLngLat([lng, lat]).addTo(map);
+      } else {
+        const start = drawStartRef.current;
+        const newStreet = {
+          id: `custom_${Date.now()}`,
+          name: '',
+          type: 'custom',
+          coords: [[start.lng, start.lat], [lng, lat]],
+          visible: true,
+        };
+        setStreets(prev => {
+          const updated = [...prev, newStreet];
+          if (mapRef.current?.getSource('streets')) {
+            mapRef.current.getSource('streets').setData(toGeoJSON(updated));
+          } else {
+            setupLayers(mapRef.current, toGeoJSON(updated));
+          }
+          return updated;
+        });
+        setHasStreets(true);
+        drawStartRef.current = null;
+        setDrawPhase(0);
+        if (drawMarkerRef.current) {
+          drawMarkerRef.current.remove();
+          drawMarkerRef.current = null;
+        }
+      }
+    });
 
     layersReadyRef.current = true;
     setLayersReady(true);
@@ -343,6 +426,23 @@ export function StreetEditor({ onMapSelect }) {
     });
   }, []);
 
+  const toggleDrawMode = useCallback(() => {
+    const next = !drawModeRef.current;
+    drawModeRef.current = next;
+    setDrawMode(next);
+    if (!next) {
+      drawStartRef.current = null;
+      setDrawPhase(0);
+      if (drawMarkerRef.current) {
+        drawMarkerRef.current.remove();
+        drawMarkerRef.current = null;
+      }
+    }
+    if (mapRef.current) {
+      mapRef.current.getCanvas().style.cursor = next ? 'crosshair' : '';
+    }
+  }, []);
+
   const handleCreatePoster = () => {
     const map = mapRef.current;
     if (!map) return;
@@ -412,11 +512,21 @@ export function StreetEditor({ onMapSelect }) {
           </div>
         )}
 
+        {/* Draw mode hint */}
+        {drawMode && (
+          <div className="absolute top-3 right-14 z-10 bg-red-50 dark:bg-red-950 border border-red-300 dark:border-red-700 rounded-lg px-3 py-2 text-xs shadow-lg max-w-[200px]">
+            <p className="font-semibold text-red-700 dark:text-red-300 mb-0.5">{t('streetEditor.drawModeActive')}</p>
+            <p className="text-red-600 dark:text-red-400">
+              {drawPhase === 1 ? t('streetEditor.drawClickEnd') : t('streetEditor.drawClickStart')}
+            </p>
+          </div>
+        )}
+
         {/* Bottom controls */}
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
           <Button
             onClick={loadStreets}
-            disabled={isLoading}
+            disabled={isLoading || drawMode}
             className="bg-white text-zinc-900 hover:bg-zinc-100 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700 shadow-lg border border-zinc-200 dark:border-zinc-700 text-sm font-semibold"
           >
             {isLoading
@@ -425,7 +535,20 @@ export function StreetEditor({ onMapSelect }) {
             }
           </Button>
 
-          {hasStreets && visibleCount > 0 && (
+          <Button
+            onClick={toggleDrawMode}
+            className={drawMode
+              ? 'bg-red-600 text-white hover:bg-red-700 shadow-lg text-sm font-semibold'
+              : 'bg-white text-zinc-900 hover:bg-zinc-100 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700 shadow-lg border border-zinc-200 dark:border-zinc-700 text-sm font-semibold'
+            }
+          >
+            {drawMode
+              ? <><X className="w-4 h-4 mr-1.5" />{t('streetEditor.drawCancel')}</>
+              : <><PenLine className="w-4 h-4 mr-1.5" />{t('streetEditor.drawButton')}</>
+            }
+          </Button>
+
+          {hasStreets && visibleCount > 0 && !drawMode && (
             <Button
               onClick={handleCreatePoster}
               className="bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-200 shadow-lg text-sm font-semibold"
